@@ -1,0 +1,9 @@
+BMP = 0
+PNG = 1
+JPEG = 2
+PDF = 3
+SVG = 4
+
+UPLOAD = 100
+SCAN = 200
+
