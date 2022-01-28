@@ -44,7 +44,11 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [P
 
 ```bash
 #This software is configured to run on a Raspberry Pi. other platforms will need adjustments not included in these instructions.
-
+# 0. Prerequisites:
+      $ sudo apt-get update
+      $ sudo apt-get upgrade
+      $ sudo apt-get sqlite python3 python3-pip sqlite3 apache2 libapache2-mod-wsgi-py3 python3-setuptools python3-dev build-essential
+      $ sudo pip install django==4.0.1
 # 1. Clone this repository
 $ git clone https://github.com/johabeere/SmartBaordBot
 
