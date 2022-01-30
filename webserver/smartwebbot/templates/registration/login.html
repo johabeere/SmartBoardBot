@@ -1,39 +1,35 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SBB - Test Page</title>
-    <meta name="description" content="Test Page">
+{% extends 'base.html' %}
+{% block content %}
+    <div class="ff-panel">
+        <div class="titlebanner">
+            <h1>SmartBoardBot</h1>
+            <h3>Gib mir deine Login-Daten und ich geb dir ein geiles Userinterface.</h3>
+        </div>
+        <div class="content-wrapper">
+            <div class="login-form-wrapper">
+                <h3>
+                    Login:
+                </h3>
+                <br>
+                <form action="/accounts/login/" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
 
-</head>
-<body>
+                    <div class="text-center">
+                        <button class="btn btn-primary" type="submit">
+                            Einloggen <i class="fa fa-sign-in"></i>
+                        </button>
 
-<h1>
-    Please log in lol
-</h1>
+                    </div>
+                </form>
 
-<form method="POST">
-    {%  csrf_token  %}
-    {{ form.as_p }}
+            </div>
 
-    <!--
-    <label for="usernmae">
-        Username:
-    </label>
-    <input type="text" name="username" id="usernmae">
+        </div>
+    </div>
 
-    <label for="password">
-        Password:
-    </label>
-    <input type="text" name="password" id="password">
-    -->
-    <button type="submit">
-        Einloggen! Jetzt!
-    </button>
-</form>
+    <a class="bottom-left btn btn-secondary" href="/">
+        Back
+    </a>
 
-
-</body>
-</html>
+{% endblock %}

@@ -1,19 +1,21 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-    <div class="navbar">
+    <div class="navbar-sbb">
+        <div class="navbar-title">
+            Hallo {{ user.username }}!
+        </div>
         <div class="navbar-buttons">
-            <button class="btn">
+            <button class="btn btn-secondary">
+                <i class="fa fa-cog"></i>
+            </button>
+            <button class="btn btn-secondary">
+                My Uploads <i class="fa fa-folder"></i>
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='/accounts/logout' ">
                 LogOut
-            </button>
-            <button class="btn">
-                Settings
-            </button>
-            <button class="btn">
-                My Uploads
-                {% load static %}
-                <img class="rotating" src="{% static 'icons/swastika.png' %}">
+                <i class="fa fa-sign-out"></i>
             </button>
         </div>
     </div>
@@ -22,9 +24,31 @@
 
         <div class="sidebar">
             <div class="connection">
-
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#connectionPanel"
+                        aria-expanded="false" aria-controls="connectionPanel">
+                    Connection
+                </button>
+                <div class="collapse" id="connectionPanel">
+                    <div class="card card-body">
+                        <p> Wohoooo this another appearing text</p>
+                    </div>
+                    <p>Woho this is appearing now</p>
+                </div>
             </div>
             <div class="uploads">
+                <p>
+  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+  </a>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Button with data-target
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
 
             </div>
             <div class="camera">
@@ -37,5 +61,9 @@
         </div>
 
     </div>
+
+    <a class="bottom-left btn btn-secondary" href="/">
+        <i class="fa fa-backward"> </i> Back
+    </a>
 
 {% endblock %}
