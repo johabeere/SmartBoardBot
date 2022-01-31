@@ -7,7 +7,7 @@
     <div class="d-flex flex-row">
         <form action="files/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
             {% csrf_token %}
-            <input name="file" type="file" id="file">
+            <input class="btn btn-secondary" name="file" type="file" id="file">
 
             <button class="btn btn-secondary" type="submit" value="submit" >
                 <i class="fa fa-upload"></i>
