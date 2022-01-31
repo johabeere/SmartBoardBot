@@ -1,0 +1,90 @@
+<div class="uploads-header">
+    <h3> My Uploads </h3>
+</div>
+
+<div class="new-upload">
+    <h5>Upload new File:</h5>
+    <div class="d-flex flex-row">
+        <form action="files/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="file" type="file" id="file">
+
+            <button class="btn btn-secondary" type="submit" value="submit" >
+                <i class="fa fa-upload"></i>
+            </button>
+        </form>
+        <div class="status d-flex flex-row">
+            <span id="uploadSuccess" style="display: none">
+                &nbsp;<i style="color: green" class="fa fa-check"></i>
+                &nbsp; Upload successful
+            </span>
+            <span id="uploadFail" style="display: none">
+                &nbsp;<i style="color: red" class="fa fa-close"></i>
+                &nbsp;Upload failed
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="filelist">
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    ID
+                </td>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Uploader
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% if files %}
+                {% for file in files %}
+                    <tr>
+                        <td>
+                            {{ file.id }}
+                        </td>
+                        <td>
+                            {{ file.title }}
+                        </td>
+                        <td>
+                            {{ file.user }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $('#uploadForm').submit(function(evt) {
+        evt.preventDefault();
+        let formData = new FormData($(this)[0]);
+        $.ajaxSetup({
+        // make sure to send the header
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        });
+        $.ajax({
+            url: 'files/upload',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data)
+                $('#uploadSuccess').show();
+            },
+            error: function(data){
+                console.log('Error ' + data)
+                $('#uploadFail').show();
+            }
+        });
+    });
+</script>

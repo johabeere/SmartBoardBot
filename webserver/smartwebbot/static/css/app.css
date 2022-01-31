@@ -68,9 +68,12 @@ body {
     -webkit-box-shadow: 0px 0px 6px -1px #FFFFFF;
     box-shadow: 0px 0px 6px 0px #FFFFFF;
 
+    overflow: hidden;
+
     width: 20vw;
     height: 800px;
     background-color: #1c1c1c;
+    color: white;
     border-radius: 20px;
     margin: 10px;
 }
@@ -80,7 +83,7 @@ body {
     box-shadow: 0px 0px 6px 0px #FFFFFF;
 
     margin: 10px;
-    width: 40vw;
+    width: 80vw;
     height: 800px;
     background-color: #1c1c1c;
     border-radius: 20px;
@@ -148,3 +151,108 @@ body {
     align-items: center;
 }
 
+.panel-head{
+    color: white;
+    background-color: transparent;
+
+    border-radius: 0px;
+    border-style: solid;
+    border-width: thin;
+    border-color: #646464;
+
+    width: 100%;
+    height: 50px;
+}
+
+.panel-head:hover{
+    background-color: white;
+    color: #1c1c1c;
+}
+
+.card{
+    background-color: #003e6e!important;
+    color: inherit;
+    border-width: 1px!important;
+    border-color: #003e6e!important;
+    padding: 0px!important;
+}
+
+.list-entry:nth-child(2n){
+    background-color: #005398;
+}
+
+.list-entry{
+    width: 100%;
+    height: 30px;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.list-entry:hover{
+    background-color: white;
+    color: black;
+}
+
+.errorpanel{
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.errorpanel h1{
+    color: inherit;
+}
+
+.centered-container{
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploads-header{
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin: 10px;
+}
+
+.new-upload{
+    padding: 20px;
+    color: white;
+}
+
+.status{
+    height: 40px;
+}
+.status span{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.filelist{
+    color: white;
+    width: 100%;
+}
+
+.filelist table{
+    width: 100%
+}
+
+.filelist thead{
+    background-color: #003e6e;
+}
+
+.filelist td{
+    padding: 10px;
+
+}

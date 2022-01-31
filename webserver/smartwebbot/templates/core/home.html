@@ -24,39 +24,62 @@
 
         <div class="sidebar">
             <div class="connection">
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#connectionPanel"
+                <button class="panel-head" type="button" data-toggle="collapse" data-target="#connectionPanel"
                         aria-expanded="false" aria-controls="connectionPanel">
                     Connection
                 </button>
                 <div class="collapse" id="connectionPanel">
                     <div class="card card-body">
-                        <p> Wohoooo this another appearing text</p>
+                        <div class="list-entry opener" id="show-connection">
+                            Show Connection
+                        </div>
+                        <div class="list-entry opener" id="connection-log">
+                            Connection Log
+                        </div>
+                        <div class="list-entry opener" id="connection-stats">
+                            Connection Stats
+                        </div>
                     </div>
-                    <p>Woho this is appearing now</p>
                 </div>
             </div>
             <div class="uploads">
-                <p>
-  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-  </a>
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-target
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-</div>
-
+                <button class="panel-head" type="button" data-toggle="collapse" data-target="#uploadPanel"
+                        aria-expanded="false" aria-controls="uploadPanel">
+                    Files
+                </button>
+                <div class="collapse" id="uploadPanel">
+                    <div class="card card-body">
+                        <div class="list-entry opener" id="show-uploads">
+                            Show Uploads
+                        </div>
+                        <div class="list-entry opener" id="my-uploads">
+                            My Uploads
+                        </div>
+                        <div class="list-entry opener" id="teacher-uploads">
+                            Teacher Uploads
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="camera">
-
+                <button class="panel-head" type="button" data-toggle="collapse" data-target="#cameraPanel"
+                        aria-expanded="false" aria-controls="cameraPanel">
+                    Camera
+                </button>
+                <div class="collapse" id="cameraPanel">
+                    <div class="card card-body">
+                        <div class="list-entry opener" id="show-camera">
+                            Live Camera
+                        </div>
+                        <div class="list-entry opener" id="show-scans">
+                            Scans
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="mainpanel">
+        <div class="mainpanel" id="mainpanel">
 
         </div>
 
@@ -66,4 +89,33 @@
         <i class="fa fa-backward"> </i> Back
     </a>
 
+    <script>
+        $(document).ready(function () {
+            $('.opener').click(function (event) {
+                console.log("Loading " + event.target.id);
+                loadPanel(event.target.id);
+            });
+        });
+
+        function loadPanel(target) {
+            console.log("Loading " + target);
+
+            $.ajax({
+                url: 'loadpanel',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    target: target,
+                },
+                success: function (data) {
+                    $('#mainpanel').html(data);
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        }
+    </script>
+
 {% endblock %}
+

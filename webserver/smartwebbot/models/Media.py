@@ -15,7 +15,7 @@ class Media(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     data = models.BinaryField()
-    is_corrupt = models.BooleanField()
+    is_corrupt = models.BooleanField(null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -24,6 +24,7 @@ class Media(models.Model):
 
     class Meta:
         ordering = ['created_on']
+        app_label = 'smartwebbot'
 
         def __unicode__(self):
             return self.title
