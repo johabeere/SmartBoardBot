@@ -1,0 +1,25 @@
+<tr class="greytr">
+    <td>
+        {{ file.id }}
+    </td>
+    <td>
+        {{ file.title }}
+    </td>
+    <td>
+        {% if file.type == 100 %}
+            UPLOAD
+        {% else %}
+            SCAN
+        {% endif %}
+    </td>
+    <td>
+        {{ file.title|slice:"-4:" }}
+    </td>
+    <td>
+        {{ file.user }}
+    </td>
+    <td>
+        {% load mathfilters %}
+        {{ file.data|length|div:1000 }} KB
+    </td>
+</tr>

@@ -37,24 +37,25 @@
                     Name
                 </td>
                 <td>
+                    Type
+                </td>
+                <td>
+                    Filetype
+                </td>
+                <td>
                     Uploader
                 </td>
+
+                <td>
+                    Size
+                </td>
+
             </tr>
         </thead>
-        <tbody>
+        <tbody id="filetablebody">
             {% if files %}
                 {% for file in files %}
-                    <tr>
-                        <td>
-                            {{ file.id }}
-                        </td>
-                        <td>
-                            {{ file.title }}
-                        </td>
-                        <td>
-                            {{ file.user }}
-                        </td>
-                    </tr>
+                    {% include 'panels/uploads/partials/filerow.html' %}
                 {% endfor %}
             {% endif %}
         </tbody>
@@ -78,12 +79,14 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                console.log(data)
                 $('#uploadSuccess').show();
+                $('#uploadFail').hide();
+                $('#filetablebody').append(data);
             },
             error: function(data){
-                console.log('Error ' + data)
+                console.log('Error: ' + data)
                 $('#uploadFail').show();
+                $('#uploadSuccess').show();
             }
         });
     });

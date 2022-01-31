@@ -254,5 +254,8 @@ body {
 
 .filelist td{
     padding: 10px;
+}
 
+.greytr:nth-child(2n){
+    background-color: #3f3f3f;
 }
