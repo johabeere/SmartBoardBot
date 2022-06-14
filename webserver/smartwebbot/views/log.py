@@ -1,7 +1,9 @@
 from django.http import HttpResponse
-from smartwebbot.getlogs import getlogs
+from smartwebbot.boardfunctions import logger
+from django.shortcuts import render
 
 
-def take_picture(request):
-    getlogs.load_logs()
-    return HttpResponse(200)
+def getlogs(request):
+    text = logger.load_logs()
+    #return render(request, "panels/connection/connection-log.html", {"text":text})
+    return HttpResponse(text)

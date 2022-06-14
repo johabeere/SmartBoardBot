@@ -5,16 +5,35 @@
 <div class="new-upload">
     <h5>Jobname:</h5>
     <div class="d-flex flex-row">
-        <input type="text" name="Job_ID" value="">
+        <input type="text" id="Job_ID" value="">
+        <button class="btn btn-primary" onclick="loadlog()"> search</button>
     </div>
-    <object data="">
-
-    </object>
+    <div>
+        
+        <p id = "logpanel">{{text}}</p>
+    </div>
 </div>
 
 <script type="text/javascript">
-    function loadlog(Job_ID){
-        $.a
+    function loadlog(){
+        log_ID=$("#Job_ID").val(),
+        $.ajax({
+            url: 'log/getlogs',
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                id:log_ID,
+            },
+            success: function (data) {
+                
+                $('#logpanel').html(data)
+            },
+            error: function(data){
+
+                alert("Fehler"+ data);
+            },
+            
+        });
     }
 </script>
 
