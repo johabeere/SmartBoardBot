@@ -65,7 +65,6 @@ def cancel():
         liftPen()
 
     status = "CANCELED"
-    job = "NONE"
 
 
 def getStatus():

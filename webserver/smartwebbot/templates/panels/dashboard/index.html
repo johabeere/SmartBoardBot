@@ -75,7 +75,7 @@
 
             <div class="statusbar">
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_photographing">
 
                     </div>
                     <div class="statusbardescription">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_stitching">
 
                     </div>
                     <div class="statusbardescription">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_scan_finished">
 
                     </div>
                     <div class="statusbardescription">
@@ -157,7 +157,7 @@
             });
         }
 
-        function update(){
+        function update() {
             $.ajax({
                 url: 'dashboard/update',
                 method: 'POST',
@@ -168,17 +168,87 @@
                     console.log(data)
                     let info = JSON.parse(data);
 
-                    if(info['status'] === "WORKING"){
-                        switch(info['job']){
+                    if (info['status'] === "WORKING") {
+                        switch (info['job']) {
                             case "convert":
                                 $('#status_uploading').css('background-color', 'green');
                                 $('#status_converting').css('background-color', 'yellow');
+                                resetScan();
                                 break;
                             case "parse":
                                 $('#status_uploading').css('background-color', 'green');
                                 $('#status_converting').css('background-color', 'green');
-                                $('#status_parsing').css('background_color', 'yellow');
+                                $('#status_parsing').css('background-color', 'yellow');
+                                resetScan();
                                 break;
+                            case "draw":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background-color', 'green');
+                                $('#status_drawing').css('background-color', 'yellow');
+                                resetScan();
+                                break;
+                            default:
+                                resetScan();
+                                resetDraw();
+                        }
+                    } else if (info['status'] === "FINISHED"){
+                        if(info['job'] === "draw"){
+                            $('#status_uploading').css('background-color', 'green');
+                            $('#status_converting').css('background-color', 'green');
+                            $('#status_parsing').css('background-color', 'green');
+                            $('#status_drawing').css('background-color', 'green');
+                        }else if(info['job'] === 'stitch'){
+                            $('#status_photographing').css('background-color', 'green');
+                            $('#status_stitching').css('background-color', 'green');
+                            $('#status_scan_finished').css('background-color', 'green');
+                        }
+                        switch(info['job']){
+                            case "convert":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                resetScan();
+                                break;
+                            case "parse":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background-color', 'green');
+                                resetScan();
+                                break;
+                            case "draw":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background-color', 'green');
+                                $('#status_drawing').css('background-color', 'green');
+                                resetScan();
+                                break;
+                            default:
+                                resetScan();
+                                resetDraw();
+                        }
+                    } else if(info['status'] === "CANCELED"){
+                        switch (info['job']) {
+                            case "convert":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'red');
+                                resetScan();
+                                break;
+                            case "parse":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background-color', 'red');
+                                resetScan();
+                                break;
+                            case "draw":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background-color', 'green');
+                                $('#status_drawing').css('background-color', 'red');
+                                resetScan();
+                                break;
+                            default:
+                                resetScan();
+                                resetDraw();
                         }
                     }
                 },
@@ -190,7 +260,20 @@
             setTimeout(update, 1000);
         }
 
-        $(document).ready(function(){
+        function resetScan(){
+            $('#status_photographing').css('background-color', 'white');
+            $('#status_stitching').css('background-color', 'white');
+            $('#status_scan_finished').css('background-color', 'white');
+        }
+
+        function resetDraw(){
+            $('#status_uploading').css('background-color', 'white');
+            $('#status_converting').css('background-color', 'white');
+            $('#status_parsing').css('background-color', 'white');
+            $('#status_drawing').css('background-color', 'white');
+        }
+
+        $(document).ready(function () {
             update();
         });
     </script>

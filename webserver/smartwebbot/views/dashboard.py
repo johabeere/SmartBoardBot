@@ -6,7 +6,7 @@ from concurrent.futures import thread
 from time import sleep
 
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from smartwebbot.boardfunctions import converter, parser, engine
@@ -32,7 +32,8 @@ DONE_SCAN = 203
 def start_drawing_handler(request):
     t1 = threading.Thread(target=start_drawing, args=[request])
     t1.start()
-    return render(request, 'core/home.html')
+    sleep(1)
+    return HttpResponseRedirect("/home")
 
 def start_drawing(request):
     file = request.FILES['file']

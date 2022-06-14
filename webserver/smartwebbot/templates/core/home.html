@@ -131,6 +131,8 @@
 
     <script>
         $(document).ready(function () {
+            loadPanel("dashboard")
+
             $('.opener').click(function (event) {
                 console.log("Loading " + event.target.id);
                 loadPanel(event.target.id);
