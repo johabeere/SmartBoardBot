@@ -5,13 +5,15 @@ import os
 from time import sleep
 
 def take_picture():
-    return ""
-    camera = PiCamera()
-    camera.start_preview()
-    sleep(5)
-    path = os.getcwd() + "/smartwebbot/static/img/photos/image"+get_current_index()+".jpg"
-    camera.capture(path)
-    camera.stop_preview()
+    #return ""
+    #camera = PiCamera()
+    #camera.start_preview()
+    #sleep(5)
+    path = os.getcwd() + "/smartwebbot/static/img/photos/image"+str(get_current_index() + 1)+".jpg"
+    command = "libcamera-jpeg -o " + path
+    os.system(command)
+    #camera.capture(path)
+    #camera.stop_preview()
 
 
 def get_current_index():
