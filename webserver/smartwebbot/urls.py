@@ -11,5 +11,5 @@ urlpatterns = [
     path('accounts/profile/', views.home),
     path('loadpanel', views.loadpanel, name='loadpanel'),
     path('files/upload', views.upload, name='upload'),
-
+    path('camera/take_picture', views.take_picture, name='take_picture'),
 ]
