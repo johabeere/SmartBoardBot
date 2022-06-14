@@ -1,4 +1,4 @@
-__all__ = ['index', 'testPage', 'home', 'loadpanel', 'camera', 'log']
+__all__ = ['index', 'testPage', 'home', 'loadpanel', 'camera', 'log', 'motor', 'parser']
 
 from .index import *
 from .home import *
@@ -7,4 +7,6 @@ from .loadpanel import *
 from .files import *
 from .camera import *
 from .log import *
+from .motor import *
+from .parser import *
 

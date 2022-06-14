@@ -1,0 +1,29 @@
+<div class="centered-container">
+    <div>
+        <i style="color: green;" class="fa fa-check"></i> The current viewed image is: {{ img_url }}
+    </div>
+
+    <div>
+        <button class="btn btn-primary" onclick="startMotor()">
+            Parsen!
+        </button>
+    </div>
+
+    <script type="text/javascript">
+        function startMotor(){
+            $.ajax({
+                url: 'parser/parse_file',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    alert("Parsen abgeschlossen!");
+                },
+                error: function (data) {
+                    alert("Fehler" + data);
+                },
+            });
+        }
+    </script>
+</div>

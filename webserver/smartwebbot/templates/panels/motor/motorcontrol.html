@@ -1,0 +1,29 @@
+<div class="centered-container">
+    <div>
+        <i style="color: green;" class="fa fa-check"></i> The current viewed image is: {{ img_url }}
+    </div>
+
+    <div>
+        <button class="btn btn-primary" onclick="startMotor()">
+            Start Engine!
+        </button>
+    </div>
+
+    <script type="text/javascript">
+        function startMotor(){
+            $.ajax({
+                url: 'motor/start_motor',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    alert("Motor gestartet!");
+                },
+                error: function (data) {
+                    alert("Fehler" + data);
+                },
+            });
+        }
+    </script>
+</div>

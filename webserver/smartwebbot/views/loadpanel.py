@@ -20,5 +20,9 @@ def loadpanel(request):
     elif target == 'show-camera':
         img_url = camera.get_current_filename_web()
         return render(request, 'panels/camera/show-camera.html', {'img_url': img_url})
+    elif target == 'motorcontrol':
+        return render(request, 'panels/motor/motorcontrol.html')
+    elif target == 'parser':
+        return render(request, 'panels/parser/index.html')
     else:
         return render(request, 'panels/error.html')

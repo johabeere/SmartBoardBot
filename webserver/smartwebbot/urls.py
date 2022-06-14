@@ -12,5 +12,7 @@ urlpatterns = [
     path('loadpanel', views.loadpanel, name='loadpanel'),
     path('files/upload', views.upload, name='upload'),
     path('camera/take_picture', views.take_picture, name='take_picture'),
+    path('motor/start_motor', views.start_motor, name='start_motor'),
+    path('parser/parse_file', views.parse_file, name='parse_file'),
     path('log/getlogs', views.getlogs, name='getlogs'),
 ]
