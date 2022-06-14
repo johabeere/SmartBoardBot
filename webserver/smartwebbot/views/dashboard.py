@@ -40,7 +40,7 @@ def start_drawing(request):
         fs = FileSystemStorage(location = os.getcwd()+'/smartwebbot/static/jpg/')
         filename = fs.save(os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getNextSourceIndex())+".jpg", file)
 
-        controller.execute(converter.convert, os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getNextSourceIndex())+".jpg", os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg")
+        controller.execute(converter.convert, os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getSourceIndex())+".jpg", os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg")
         while controller.getStatus() == "WORKING":
             sleep(0.5)
         if controller.getStatus() != "FINISHED":
