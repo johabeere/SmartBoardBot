@@ -1,50 +1,89 @@
+import logging
 import threading
 import time
 
-from SmartBoardBot.webserver.smartwebbot.boardfunctions import pencontroller
+from smartwebbot.boardfunctions.pencontroller import liftPen
 
 
-class Controller():
-    def __init__(self):
-        self.status = "IDLE"
-        self.thread = None
-        self.job = "NONE"
-        self.pen = "LOW"
+status = "IDLE"
+thread = None
+job = "NONE"
+pen = "LOW"
 
-    def getStatus(self):
-        return self.status
 
-    def execute(self, task, *args):
-        if self.status == "WORKING":
-            self.cancel()
-        self.status = "WORKING"
+class ExecutionThread(threading.Thread):
+    def __init__(self, target, args):
+        super().__init__(target=target, args=args)
+        self._kill = threading.Event()
 
-        if str(task) == "lowerPen":
-            self.pen = "LOW"
-        elif str(task) == "liftPen":
-            self.pen = "HIGH"
+    def kill(self):
+        self._kill.set()
 
-        self.job = str(task)
-        self.thread = threading.Thread(target=task, args=args)
-        self.thread.start()
 
-    def cancel(self):
-        if not self.thread.is_alive():
-            return False
-        else:
-            self.thread.terminate()
+def getStatus():
+    global status
+    global thread
+    global job
+    global pen
+    return status
 
-        if self.pen == "LOW":
-            pencontroller.liftPen()
+def execute(task, *args):
+    global status
+    global thread
+    global job
+    global pen
+    logging.basicConfig(level=logging.NOTSET)
+    logging.info("Started job " + task.__name__)
+    if status == "WORKING":
+        cancel()
+    status = "WORKING"
 
-        self.status = "CANCELED"
-        self.job = "NONE"
+    if str(task) == "lowerPen":
+        pen = "LOW"
+    elif str(task) == "liftPen":
+        pen = "HIGH"
 
-    def getStatus(self):
-        if not self.thread.is_alive and self.status == "WORKING":
-            self.status = "FINISHED"
+    job = task.__name__
+    thread = ExecutionThread(target=task, args=args)
+    thread.start()
 
-        return self.status
+def cancel():
+    global status
+    global thread
+    global job
+    global pen
+    if not thread:
+        return
 
-    def getJob(self):
-        return self.job
+    if not thread.is_alive() and status == "WORKING":
+        status = "FINISHED"
+        return
+    else:
+        thread.kill()
+
+    if pen == "LOW":
+        liftPen()
+
+    status = "CANCELED"
+    job = "NONE"
+
+
+def getStatus():
+    global status
+    global thread
+    global job
+    global pen
+    if not thread:
+        return status
+
+    if not thread.is_alive() and status == "WORKING":
+        status = "FINISHED"
+
+    return status
+
+def getJob():
+    global status
+    global thread
+    global job
+    global pen
+    return job

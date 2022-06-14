@@ -1,4 +1,4 @@
-from Media import Media
+from smartwebbot.models import Media
 from smartwebbot import constants
 
 

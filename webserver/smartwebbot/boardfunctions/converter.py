@@ -1,8 +1,12 @@
+import logging
 import os
 
 
 def convert(source, target):
+    logging.basicConfig(level=logging.NOTSET)
+    logging.info("Starting conversion of files: \n " + source + "\nto\n" + target)
     None
+
 
 def getNextSourceIndex():
     return getSourceIndex() + 1

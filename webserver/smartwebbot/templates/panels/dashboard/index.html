@@ -5,7 +5,9 @@
             <h4>
                 Das hier ist der Zeichen-Bereich
             </h4>
-            <form action="dashboard/start_drawing">
+            <form action="dashboard/start_drawing" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
                 <input class="btn btn-secondary" name="file" type="file" id="file">
                 <br>
                 <label for="x-start">
@@ -22,7 +24,7 @@
 
             <div class="statusbar">
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_uploading">
 
                     </div>
                     <div class="statusbardescription">
@@ -30,7 +32,7 @@
                     </div>
                 </div>
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_converting">
 
                     </div>
                     <div class="statusbardescription">
@@ -38,7 +40,7 @@
                     </div>
                 </div>
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_parsing">
 
                     </div>
                     <div class="statusbardescription">
@@ -46,7 +48,7 @@
                     </div>
                 </div>
                 <div class="statusbarelement">
-                    <div class="statusbarcircle">
+                    <div class="statusbarcircle" id="status_drawing">
 
                     </div>
                     <div class="statusbardescription">
@@ -156,7 +158,34 @@
         }
 
         function update(){
+            $.ajax({
+                url: 'dashboard/update',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log(data)
+                    let info = JSON.parse(data);
 
+                    if(info['status'] === "WORKING"){
+                        switch(info['job']){
+                            case "convert":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'yellow');
+                                break;
+                            case "parse":
+                                $('#status_uploading').css('background-color', 'green');
+                                $('#status_converting').css('background-color', 'green');
+                                $('#status_parsing').css('background_color', 'yellow');
+                                break;
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log("Error: " + data);
+                },
+            });
 
             setTimeout(update, 1000);
         }

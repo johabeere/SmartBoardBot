@@ -4,12 +4,8 @@ import os
 import sys
 from smartwebbot.boardfunctions import boardcontroller
 
-controller = None
 
 def main():
-    global controller
-    controller = boardcontroller.Controller()
-
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'webserver.settings')
     try:
@@ -22,8 +18,6 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-def getController():
-    return controller
 
 if __name__ == '__main__':
     main()
