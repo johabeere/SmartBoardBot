@@ -1,8 +1,11 @@
+import os
+
 import serial
 import time
 import logging
 
-def write_file(path):
+
+def draw(path):
     logging.basicConfig(level=logging.NOTSET)  # Here
     logging.info("Sending file " + path)
     ser = serial.Serial('/dev/ttyUSB0', 250000)
@@ -13,10 +16,17 @@ def write_file(path):
         logging.info("Sent line " + line)
         time.sleep(1)
         continue
-        for i in range(0, 100000):
-            line = ser.readline()
-            logging.info("Got answer: " + str(line))
-
-            if line == b'ok\n':
-                break
     ser.close()
+
+
+def getNextSourceIndex():
+    return getSourceIndex() + 1
+
+
+def getSourceIndex():
+    img_dir = os.getcwd() + "/smartwebbot/static/gcode/"
+
+    for i in range(0, 100000):
+        if not os.path.exists(img_dir + "gcode" + str(i) + ".gcode"):
+            return i - 1
+    return -1
