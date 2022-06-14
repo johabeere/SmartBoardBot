@@ -6,7 +6,7 @@ def loadpanel(request):
     if target == 'show-connection':
         return render(request, 'panels/connection/show-connection.html')
     elif target == 'connection-log':
-        return render(request, 'panels/connection/show-connection.html')
+        return render(request, 'panels/connection/connection-log.html')
     elif target == 'connection-stats':
         return render(request, 'panels/connection/show-connection.html')
     elif target == 'show-uploads':
