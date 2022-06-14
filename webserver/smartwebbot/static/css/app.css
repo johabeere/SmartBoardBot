@@ -151,7 +151,7 @@ body {
     align-items: center;
 }
 
-.panel-head{
+.panel-head {
     color: white;
     background-color: transparent;
 
@@ -164,36 +164,36 @@ body {
     height: 50px;
 }
 
-.panel-head:hover{
+.panel-head:hover {
     background-color: white;
     color: #1c1c1c;
 }
 
-.card{
-    background-color: #003e6e!important;
+.card {
+    background-color: #003e6e !important;
     color: inherit;
-    border-width: 1px!important;
-    border-color: #003e6e!important;
-    padding: 0px!important;
+    border-width: 1px !important;
+    border-color: #003e6e !important;
+    padding: 0px !important;
 }
 
-.list-entry:nth-child(2n){
+.list-entry:nth-child(2n) {
     background-color: #005398;
 }
 
-.list-entry{
+.list-entry {
     width: 100%;
     height: 30px;
     font-size: 15px;
     padding: 5px;
 }
 
-.list-entry:hover{
+.list-entry:hover {
     background-color: white;
     color: black;
 }
 
-.errorpanel{
+.errorpanel {
     width: 100%;
     height: 100%;
     color: white;
@@ -204,11 +204,11 @@ body {
 
 }
 
-.errorpanel h1{
+.errorpanel h1 {
     color: inherit;
 }
 
-.centered-container{
+.centered-container {
     width: 100%;
     height: 100%;
     color: white;
@@ -218,44 +218,109 @@ body {
     justify-content: center;
 }
 
-.uploads-header{
+.uploads-header {
     width: 100%;
     text-align: center;
     color: white;
     margin: 10px;
 }
 
-.new-upload{
+.new-upload {
     padding: 20px;
     color: white;
 }
 
-.status{
+.status {
     height: 40px;
 }
-.status span{
+
+.status span {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.filelist{
+.filelist {
     color: white;
     width: 100%;
 }
 
-.filelist table{
+.filelist table {
     width: 100%
 }
 
-.filelist thead{
+.filelist thead {
     background-color: #003e6e;
 }
 
-.filelist td{
+.filelist td {
     padding: 10px;
 }
 
-.greytr:nth-child(2n){
+.greytr:nth-child(2n) {
     background-color: #3f3f3f;
+}
+
+
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    height: 100%;
+    padding: 10px;
+}
+
+
+.draw-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.scan-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.green{
+    color: white;
+    background-color: green!important;
+    border: 0;
+}
+
+.btn-danger{
+    color: white;
+    background-color: red;
+}
+
+.statusbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.statusbarelement{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin: 10px;
+}
+
+.statusbarcircle{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.statusbardescription{
+    color: white;
+    margin-top: 5px;
 }

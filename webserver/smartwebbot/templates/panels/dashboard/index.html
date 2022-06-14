@@ -1,0 +1,168 @@
+<div class="centered-container">
+    <div class="dashboard-container">
+        <div class="draw-container">
+            <h3> Zeichnen </h3>
+            <h4>
+                Das hier ist der Zeichen-Bereich
+            </h4>
+            <form action="dashboard/start_drawing">
+                <input class="btn btn-secondary" name="file" type="file" id="file">
+                <br>
+                <label for="x-start">
+                    X-Koordinate
+                </label>
+                <input name="x-start">
+
+                <label for="y-start">
+                    Y-Koordinate
+                </label>
+                <input name="y-koordinate">
+                <button class="btn btn-primary green">Zeichnen!</button>
+            </form>
+
+            <div class="statusbar">
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Hochladen
+                    </div>
+                </div>
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Umwandeln JPG->SVG
+                    </div>
+                </div>
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Parsen zu GCode
+                    </div>
+                </div>
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Malen
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-danger" onclick="cancelDrawing()">
+                Abbrechen
+            </button>
+
+        </div>
+
+        <div class="scan-container">
+            <h3> Scannen </h3>
+            <h4>
+                Das hier ist der Scan-Bereich
+            </h4>
+
+            <button class="btn btn-primary green" onclick="scan()">
+                Starten!
+            </button>
+
+            <div class="statusbar">
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Fotografieren
+                    </div>
+                </div>
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Stitchen
+                    </div>
+                </div>
+                <div class="statusbarelement">
+                    <div class="statusbarcircle">
+
+                    </div>
+                    <div class="statusbardescription">
+                        Fertig
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="btn btn-danger" onclick="cancelScan()">
+                Abbrechen
+            </button>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        function cancelDrawing() {
+            $.ajax({
+                url: 'dashboard/cancel_drawing',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log("Drawing canceled.")
+                },
+                error: function (data) {
+                    console.log("Error: " + data)
+                },
+            });
+        }
+
+        function cancelScan() {
+            $.ajax({
+                url: 'dashboard/cancel_scan',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log("Scan canceled")
+                },
+                error: function (data) {
+                    alert("Error: " + data);
+                },
+            });
+        }
+
+        function scan() {
+            $.ajax({
+                url: 'dashboard/start_scan',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    console.log("Started scan")
+                },
+                error: function (data) {
+                    alert("Error: " + data);
+                },
+            });
+        }
+
+        function update(){
+
+
+            setTimeout(update, 1000);
+        }
+
+        $(document).ready(function(){
+            update();
+        });
+    </script>
+</div>

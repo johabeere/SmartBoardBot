@@ -24,5 +24,7 @@ def loadpanel(request):
         return render(request, 'panels/motor/motorcontrol.html')
     elif target == 'parser':
         return render(request, 'panels/parser/index.html')
+    elif target == 'dashboard':
+        return render(request, 'panels/dashboard/index.html')
     else:
         return render(request, 'panels/error.html')
