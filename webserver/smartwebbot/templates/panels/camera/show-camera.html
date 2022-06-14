@@ -1,0 +1,31 @@
+<div class="centered-container">
+    <div>
+        <i style="color: green;" class="fa fa-check"></i> The current viewed image is: {{ img_url }}
+    </div>
+    <div>
+        <img width="1000" height="720" src="{{ img_url }}" alt="No Image found">
+    </div>
+    <div>
+        <button class="btn btn-primary" onclick="takepicture()">
+            Take Picture
+        </button>
+    </div>
+
+    <script type="text/javascript">
+        function takepicture(){
+            $.ajax({
+                url: 'camera/take_picture',
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (data) {
+                    alert("Photo geschossen!");
+                },
+                error: function (data) {
+                    alert("Fehler" + data);
+                },
+            });
+        }
+    </script>
+</div>
