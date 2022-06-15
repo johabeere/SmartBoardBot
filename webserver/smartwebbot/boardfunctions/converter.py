@@ -1,28 +1,17 @@
 import logging
 import os
+import subprocess
 
-import aspose.words as aw
+from hatched import hatched
 
 
 def convert(source, target):
     logging.basicConfig(level=logging.NOTSET)
     logging.info("Starting conversion of files: \n " + source + "\nto\n" + target)
-
-    doc = aw.Document()
-    builder = aw.DocumentBuilder(doc)
-    shape = builder.insert_image(source)
-
-    pageSetup = builder.page_setup
-    pageSetup.page_width = shape.width
-    pageSetup.page_height = shape.height
-    pageSetup.top_margin = 0
-    pageSetup.left_margin = 0
-    pageSetup.bottom_margin = 0
-    pageSetup.right_margin = 0
-
-    doc.save(target)
-
-
+    hatched.hatch(str(source), hatch_pitch=5, levels=(20,100,180),blur_radius=1)
+    os.rename(source[:-3]+"svg",target) #DÖRING IST KEK
+    #subprocess.run("mv", str(dir + source), "/home/adolf/SmartBoardB" )
+    #os.replace(str(source[0:-3]+"svg"),str(os.getcwd()+"/smartwebbot/static/svg/"+source[24:-3]+"svg"))
 
 def getNextSourceIndex():
     return getSourceIndex() + 1

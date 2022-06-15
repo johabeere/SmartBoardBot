@@ -1,0 +1,6 @@
+*.svg
+*.jpg
+*.gcode
+*.log
+/webserver/smartwebbot/static/img/photos/*
+*.pyc

@@ -1,40 +1,49 @@
 import os
 
-import serial
+from smartwebbot.boardfunctions import boardcontroller
 import time
 import logging
-
+import serial
 from smartwebbot.boardfunctions import pencontroller
 
 
 def draw(offsetx, offsety, path):
     logging.basicConfig(level=logging.NOTSET)  # Here
     logging.info("Sending file " + path)
-    #ser = serial.Serial('/dev/ttyUSB0', 250000)
+    
+    logging.info("Opening Serial")
+    ser = serial.Serial('/dev/ttyUSB0', 250000)
+    if(ser.isOpen() == False):
+        ser.open()  
+
     file = open(path, 'r')
 
     for line in file:
         if "M5" in line:
             #time.sleep(3)
-            pencontroller.liftPen()
-            #time.sleep(3)
+            #pencontroller.liftPen()
+
+            line = ""
+            continue
         elif "M3" in line:
             #time.sleep(3)
-            pencontroller.lowerPen()
-            #time.sleep(3)
+            # pencontroller.lowerPen()
+
+            line = ""
+            continue
         elif "G1" in line:
             firstpart = line.split("X")[0]
-            xcoord = float((line.split("X")[1]).split("Y")[0][:-1]) + float(offsetx)
-            ycoord = float((line.split("X")[1]).split("Y")[1][:-2]) + float(offsety)
-            line = firstpart + "X" + str(xcoord) + " Y" + str(ycoord) + ";"
+            xcoord = float((line.split("X")[1]).split("Y")[0][:-1]) + float("00" + offsetx)
+            ycoord = float((line.split("X")[1]).split("Y")[1][:-2]) + float("00" + offsety)
+            line = firstpart + "X" + str(xcoord) + " Y" + str(ycoord) + ";\n"
 
 
-        #ser.write(str.encode(line))
+        ser.write(str.encode(line))
         logging.info("Sent line " + line)
 
         time.sleep(1)
         continue
-    #ser.close()
+    ser.close()
 
 
 def getNextSourceIndex():

@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import threading
+import serial
 from concurrent.futures import thread
 from time import sleep
 
@@ -28,6 +29,8 @@ DONE_DRAWING = 105
 PHOTOGRAPHING = 201
 STITCHING = 202
 DONE_SCAN = 203
+
+
 
 
 def start_drawing_handler(request):
@@ -76,6 +79,7 @@ def start_drawing(request):
     offsetx = request.POST.get('x-start')
     offsety = request.POST.get('y-start')
 
+    sleep(0.1) 
 
     controller.execute(engine.draw, offsetx, offsety,
                        os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")

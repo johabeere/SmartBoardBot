@@ -1,6 +1,7 @@
 import logging
 import threading
 import time
+import serial
 
 from smartwebbot.boardfunctions.pencontroller import liftPen
 
@@ -9,6 +10,7 @@ status = "IDLE"
 thread = None
 job = "NONE"
 pen = "LOW"
+
 
 
 class ExecutionThread(threading.Thread):

@@ -13,3 +13,4 @@ def liftPen():
     boardcontroller.setPen("HIGH")
     logging.basicConfig(level=logging.NOTSET)  # Here
     logging.info("Lifting Pen")
+    
