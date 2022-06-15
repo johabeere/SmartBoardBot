@@ -1,3 +1,4 @@
+import logging
 import os
 
 import svg_to_gcode
@@ -6,6 +7,9 @@ from svg_to_gcode import UNITS
 from svg_to_gcode.compiler import Compiler, interfaces
 
 def parse(source, target):
+    logging.basicConfig(level=logging.NOTSET)
+    logging.info("Starting parsing of files: \n " + source + "\nto\n" + target)
+
     # Instantiate a compiler, specifying the interface type and the speed at which the tool should move. pass_depth controls
     # how far down the tool moves after every pass. Set it to 0 if your machine does not support Z axis movement.
     gcode_compiler = Compiler(interfaces.Gcode, movement_speed=1000, cutting_speed=300, pass_depth=0)
@@ -14,8 +18,8 @@ def parse(source, target):
 
     gcode_compiler.append_curves(curves)
     gcode_compiler.unit = "mm"
-    gcode_compiler.compile_to_file(target, passes=2)
-
+    gcode_compiler.compile_to_file(target, passes=1)
+    logging.info("Finished parsing.")
 
 def getNextSourceIndex():
     return getSourceIndex() + 1

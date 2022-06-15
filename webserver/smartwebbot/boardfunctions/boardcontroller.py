@@ -86,3 +86,7 @@ def getJob():
     global job
     global pen
     return job
+
+def setPen(value):
+    global pen
+    pen = value

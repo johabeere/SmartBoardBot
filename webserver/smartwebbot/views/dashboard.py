@@ -29,35 +29,56 @@ PHOTOGRAPHING = 201
 STITCHING = 202
 DONE_SCAN = 203
 
-def start_drawing_handler(request):
-    t1 = threading.Thread(target=start_drawing, args=[request])
-    t1.start()
-    sleep(1)
-    return HttpResponseRedirect("/home")
 
-def start_drawing(request):
+def start_drawing_handler(request):
     file = request.FILES['file']
     if file.name.endswith('.jpg'):
-        fs = FileSystemStorage(location = os.getcwd()+'/smartwebbot/static/jpg/')
-        filename = fs.save(os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getNextSourceIndex())+".jpg", file)
-
-        controller.execute(converter.convert, os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getSourceIndex())+".jpg", os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg")
-        while controller.getStatus() == "WORKING":
-            sleep(0.5)
-        if controller.getStatus() != "FINISHED":
-            return HttpResponse("200")
-
+        fs = FileSystemStorage(location=os.getcwd() + '/smartwebbot/static/jpg/')
+        filename = fs.save(os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getNextSourceIndex()) + ".jpg",
+                           file)
+        t1 = threading.Thread(target=start_drawing_convert_img, args=[request])
+        t1.start()
     elif file.name.endswith('.svg'):
         fs = FileSystemStorage(location=os.getcwd() + '/smartwebbot/static/svg/')
-        filename = fs.save(os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg", file)
+        filename = fs.save(os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg",
+                           file)
+        t1 = threading.Thread(target=start_drawing, args=[request])
+        t1.start()
+    # sleep(0.1)
+    logging.basicConfig(level=logging.NOTSET)
+    logging.info("Returning Http Answer")
 
-    controller.execute(parser.parse, os.getcwd() + "/smartwebbot/static/svg/svg" + str(parser.getSourceIndex()) + ".svg", os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(parser.getNextTargetIndex()) + ".gcode")
+    return HttpResponseRedirect("/home")
+
+
+def start_drawing_convert_img(request):
+    controller.execute(converter.convert,
+                       os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getSourceIndex()) + ".jpg",
+                       os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg")
     while controller.getStatus() == "WORKING":
         sleep(0.5)
-    if controller.getStatus != "FINISHED":
+    if controller.getStatus() != "FINISHED":
+        return HttpResponse("200")
+    start_drawing(request)
+
+
+def start_drawing(request):
+    controller.execute(parser.parse,
+                       os.getcwd() + "/smartwebbot/static/svg/svg" + str(parser.getSourceIndex()) + ".svg",
+                       os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(parser.getNextTargetIndex()) + ".gcode")
+    while controller.getStatus() == "WORKING":
+        sleep(0.5)
+    if controller.getStatus() != "FINISHED":
         return HttpResponse("200")
 
-    controller.execute(engine.draw, os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")
+    logging.info("Starting to draw image.")
+
+    offsetx = request.POST.get('x-start')
+    offsety = request.POST.get('y-start')
+
+
+    controller.execute(engine.draw, offsetx, offsety,
+                       os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")
 
     return HttpResponse("200")
 
@@ -77,7 +98,6 @@ def cancel_drawing(request):
 
 
 def cancel_scan(request):
-
     controller.cancel()
     logging.basicConfig(level=logging.NOTSET)
     logging.info("Scan canceled")

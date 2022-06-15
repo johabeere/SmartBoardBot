@@ -1,8 +1,15 @@
+import logging
+
+from smartwebbot.boardfunctions import boardcontroller
 
 
 def lowerPen():
-    None
+    boardcontroller.setPen("LOW")
+    logging.basicConfig(level=logging.NOTSET)  # Here
+    logging.info("Lowering Pen")
 
 
 def liftPen():
-    None
+    boardcontroller.setPen("HIGH")
+    logging.basicConfig(level=logging.NOTSET)  # Here
+    logging.info("Lifting Pen")

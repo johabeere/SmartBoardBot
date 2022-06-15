@@ -2,9 +2,7 @@
     <div class="dashboard-container">
         <div class="draw-container">
             <h3> Zeichnen </h3>
-            <h4>
-                Das hier ist der Zeichen-Bereich
-            </h4>
+
             <form action="dashboard/start_drawing" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
@@ -18,7 +16,7 @@
                 <label for="y-start">
                     Y-Koordinate
                 </label>
-                <input name="y-koordinate">
+                <input name="y-start">
                 <button class="btn btn-primary green">Zeichnen!</button>
             </form>
 
@@ -65,9 +63,7 @@
 
         <div class="scan-container">
             <h3> Scannen </h3>
-            <h4>
-                Das hier ist der Scan-Bereich
-            </h4>
+
 
             <button class="btn btn-primary green" onclick="scan()">
                 Starten!
@@ -250,6 +246,10 @@
                                 resetScan();
                                 resetDraw();
                         }
+                    } else if(info['status'] === "IDLE") {
+                        //console.log("Resetting status bars")
+                        resetScan();
+                        resetDraw();
                     }
                 },
                 error: function (data) {
