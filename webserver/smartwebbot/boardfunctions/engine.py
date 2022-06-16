@@ -21,15 +21,15 @@ def draw(offsetx, offsety, path):
     for line in file:
         if "M5" in line:
             #time.sleep(3)
-            #pencontroller.liftPen()
+            pencontroller.liftPen()
 
-            line = ""
+            line = "M42 P4 S255"
             continue
         elif "M3" in line:
             #time.sleep(3)
-            # pencontroller.lowerPen()
+            pencontroller.lowerPen()
 
-            line = ""
+            line = "M42 P4 S0"
             continue
         elif "G1" in line:
             firstpart = line.split("X")[0]
