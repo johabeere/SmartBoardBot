@@ -96,7 +96,7 @@ def start_scan(request):
 def cancel_drawing(request):
     controller.cancel()
     logging.basicConfig(level=logging.NOTSET)
-    logging.info("Drawing canceled")
+    logging.info("Drawing canceled by viewer")
 
     return HttpResponse("200")
 
