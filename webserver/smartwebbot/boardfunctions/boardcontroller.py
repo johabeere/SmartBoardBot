@@ -94,6 +94,11 @@ def getJob():
     global pen
     return job
 
+
+def getPen():
+    global pen
+    return pen
+
 def setPen(value):
     global pen
     pen = value

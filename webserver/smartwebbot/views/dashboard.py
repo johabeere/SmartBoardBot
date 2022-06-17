@@ -79,9 +79,11 @@ def start_drawing(request):
     offsetx = request.POST.get('x-start')
     offsety = request.POST.get('y-start')
 
+    color = request.POST.get('color')
+
     sleep(0.1) 
 
-    controller.execute(engine.draw, offsetx, offsety,
+    controller.execute(engine.draw, color, offsetx, offsety,
                        os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")
 
     return HttpResponse("200")
@@ -112,5 +114,6 @@ def cancel_scan(request):
 def update_dashboard(request):
     return HttpResponse(json.dumps({
         'status': controller.getStatus(),
-        'job': controller.getJob()
+        'job': controller.getJob(),
+        'pen': controller.getPen()
     }))
