@@ -66,7 +66,9 @@ def start_drawing_convert_img(request):
 
 
 def start_drawing(request):
-    controller.execute(parser.parse,
+    slicer = request.POST.get('slicer')
+
+    controller.execute(parser.parse, slicer,
                        os.getcwd() + "/smartwebbot/static/svg/svg" + str(parser.getSourceIndex()) + ".svg",
                        os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(parser.getNextTargetIndex()) + ".gcode")
     while controller.getStatus() == "WORKING":
@@ -79,11 +81,15 @@ def start_drawing(request):
     offsetx = request.POST.get('x-start')
     offsety = request.POST.get('y-start')
 
+    scale = request.POST.get('scale')
+    if scale=="":
+        scale = "1"
+
     color = request.POST.get('color')
 
     sleep(0.1) 
 
-    controller.execute(engine.draw, color, offsetx, offsety,
+    controller.execute(engine.draw, scale, color, offsetx, offsety,
                        os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")
 
     return HttpResponse("200")

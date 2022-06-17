@@ -15,7 +15,7 @@ def stopit():
     logging.info("Stopping drawing")
     stopped = True
 
-def draw(color, offsetx, offsety, path):
+def draw(scale, color, offsetx, offsety, path):
     logging.basicConfig(level=logging.NOTSET)  # Here
     logging.info("Sending file " + path)
     
@@ -100,7 +100,7 @@ def draw(color, offsetx, offsety, path):
             firstpart = line.split("X")[0]
             xcoord = float((line.split("X")[1]).split("Y")[0][:-1]) + float("00" + offsetx)
             ycoord = float((line.split("X")[1]).split("Y")[1][:-2]) + float("00" + offsety)
-            line = firstpart + "X" + str(ycoord*2) + " Y" + str(50+xcoord*2) + ";\n"
+            line = firstpart + "X" + str(ycoord*float(scale)) + " Y" + str(50+xcoord*float(scale)) + ";\n"
 
 
         ser.write(str.encode(line))
