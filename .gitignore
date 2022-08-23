@@ -4,3 +4,4 @@
 *.log
 /webserver/smartwebbot/static/img/photos/*
 *.pyc
+*.pptx
