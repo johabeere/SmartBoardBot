@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/johabeere/SmartBoardBot"><img src="https://raw.githubusercontent.com/johabeere/SmartBoardBot/webserver/favicon.ico.png" alt="SmartBoardBot" width="200"></a>
+  <a href="https://github.com/johabeere/SmartBoardBot"><img src="https://raw.githubusercontent.com/johabeere/SmartBoardBot/master/webserver/favicon.ico.png" alt="SmartBoardBot" width="200"></a>
   <br>
   Smart Board Bot
   <br>
@@ -22,11 +22,16 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/johabeere/SmartBoardBot/docs/img/Demo.gif)
+![screenshot](https://raw.githubusercontent.com/johabeere/SmartBoardBot/master/docs/img/Demo.gif)
 
 ## Key Features
 
-* 
+* Interactive http Interface to control the board
+* complete 2 axis motion system for large vertical surfaces
+* Automatic Plotting of vector- and pixel-based images with inbuild scaling and positioning!
+* scanning of the entire surface area to be implemented soon
+* ...
+* and build entirely on open source!
 
 ## How To Use
 
