@@ -1,10 +1,12 @@
 import os
 
+
 from django.shortcuts import render
 from smartwebbot.models.Media import Media
 from smartwebbot.boardfunctions import camera
-
+from smartwebbot.boardfunctions import logger
 def loadpanel(request):
+    logger.log("Loaded a Panel!", 10)
     target = request.POST.get('target')
     if target == 'show-connection':
         return render(request, 'panels/connection/show-connection.html')

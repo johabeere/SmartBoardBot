@@ -126,3 +126,58 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/'
+
+# Loggging 😀
+LOGGING = {
+    'version': 1,                       # the dictConfig format version
+    'disable_existing_loggers': False,  # retain the default loggers
+    'formatters': {
+       'verbose': {
+           'format': '{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}',
+           'style': '{',
+       },
+       'kindaverbose': {
+           'format': '{asctime} {levelname} {module} {message}',
+           'style': '{',
+       },
+       'simple': {
+           'format': '{levelname} {message}',
+           'style': '{',
+       },
+   },
+   'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'kindaverbose',
+        },
+    },
+    'loggers': {
+       # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'CRITICAL',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'INFO',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

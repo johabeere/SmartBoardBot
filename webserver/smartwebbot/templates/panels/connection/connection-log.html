@@ -1,21 +1,70 @@
 <div class="uploads-header">
-    <h3>Logfiles</h3>
+    <h3>Logfile</h3>
 </div>
 
 <div class="new-upload">
-    <h5>Jobname:</h5>
+    <h5>Log Filters:</h5>
     <div class="d-flex flex-row">
-        <input type="text" id="Job_ID" value="">
-        <button class="btn btn-primary" onclick="loadlog()"> search</button>
+         <form action="log/applyFilters" method="POST" id="logarea" enctype="multipart/form-data">
+             {% csrf_token %}
+             <input type="checkbox" id="all" name="all" value="1"> 
+             <label for="all">Verbose</label><br>
+             <input type="checkbox" id="debug" name="debug" value="1"> 
+             <label for="debug">DEBUG</label><br>
+             <input type="checkbox" id="info" name="info" value="1"> 
+             <label for="info">INFO</label><br>
+             <input type="checkbox" id="error" name="error" value="1"> 
+             <label for="error">ERROR</label><br>
+             <input type="checkbox" id="warning" name="warning" value="1"> 
+             <label for="warning">WARNING</label><br>
+             <input type="checkbox" id="critical" name="critical" value="1"> 
+             <label for="all">CRITICAL</label><br>
+             <input type="submit" value="Apply">
+             <span id="success" style="display: none">
+                     &nbsp;<i style="color: green" class="fa fa-check"></i>
+                     &nbsp; <span id="scsmsg"></span>
+             </span>
+         </form>
     </div>
-    <div>
-        
-        <p id = "logpanel">{{text}}</p>
+    <button class="btn btn-primary" onclick="loadlog()">Load Logs</button>
+    <button class="btn btn-primary" onclick="clearlog()">Clear Logs</button>
+    <h3>Applicable Logs:</h3>
+    <div class="mainpanel terminal" id="term">
+        <pre id ="termtext">
+            test Text 
+        </pre>
+        {{text}}
     </div>
 </div>
 
 <script type="text/javascript">
-    function loadlog(){
+    $('#logarea').submit(function(evt) {
+        evt.preventDefault();
+        let formData = new FormData($(this)[0]);
+        $.ajaxSetup({
+        // make sure to send the header
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        });
+        $.ajax({
+            url: 'log/applyFilters',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#success').show();
+                $('#scsmsg').text("Applied Filters!");
+                loadlog(true);
+            },
+            error: function(data){
+                console.log('Error: ' + data)
+            
+            }
+        });
+    });
+    function loadlog(quiet = false){
         log_ID=$("#Job_ID").val(),
         $.ajax({
             url: 'log/getlogs',
@@ -25,8 +74,14 @@
                 id:log_ID,
             },
             success: function (data) {
-                
-                $('#logpanel').html(data)
+                $('#termtext').text("");
+                $('#termtext').text(data);
+                $('#success').show();
+                if (!quiet){
+                    $('#scsmsg').text("Loaded Logs!");
+                }
+                var t = document.getElementById("term");
+                t.scrollTop = t.scrollHeight;
             },
             error: function(data){
 
@@ -35,5 +90,49 @@
             
         });
     }
+    function clearlog(){
+        log_ID=$("#Job_ID").val(),
+        $.ajax({
+            url: 'log/clearlogs',
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (data) {
+                $('#success').show();
+                $('#scsmsg').text("Cleared Logs!");
+                loadlog(true);             
+            },
+            error: function(data){
+
+                alert("Fehler"+ data);
+            },
+            
+        });
+    }
+    function update() {
+        $.ajax({
+            url: 'log/update',
+            method: 'POST',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (data) {
+                console.log(data)
+                if(data == "True"){
+                    loadlog();
+                }
+            },
+            error: function (data) {
+                console.log("Error: " + data);
+            },
+        });
+    
+        setTimeout(update, 1000);
+    }
+    $(document).ready(function() {
+        update();
+    });   
+
 </script>
 

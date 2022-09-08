@@ -1,0 +1,5 @@
+# Welcome to the Configuration file. All, and I mean ALL, possibly configurable Variables are here. Have fun, I guess...
+
+#GENERAL
+General:
+  DEBUG: true #BOOL;Enable or disable logging functionality [and verbose comand outputs]

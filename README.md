@@ -43,7 +43,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and [P
       $ sudo apt-get update
       $ sudo apt-get upgrade
       $ sudo apt-get sqlite python3 python3-pip sqlite3 apache2 libapache2-mod-wsgi-py3 python3-setuptools python3-dev build-essential
-      $ sudo pip install django==4.0.1
+      $ sudo pip3 install django==4.0.1 numpy pyserial django-mathfilters svg_to_gcode hatched
 # 1. Clone this repository
 $ git clone https://github.com/johabeere/SmartBoardBot
 
