@@ -22,5 +22,6 @@ urlpatterns = [
     path('dashboard/cancel_scan', views.cancel_scan, name='cancel_scan'),
     path('dashboard/cancel_drawing', views.cancel_drawing, name='cancel_drawing'),
     path('dashboard/start_drawing', views.start_drawing_handler, name='start_drawing'),
-    path('dashboard/update', views.update_dashboard, name='update_dashboard')
+    path('dashboard/update', views.update_dashboard, name='update_dashboard'),
+    path('log/send_gcode',views.send_gcode, name='send_gcode')
 ]

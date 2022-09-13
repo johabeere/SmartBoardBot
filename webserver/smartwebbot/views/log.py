@@ -25,3 +25,7 @@ def clearlogs(request):
     return HttpResponse("200");
 def update_log(request):
     return HttpResponse(logger.check_new());
+
+def send_gcode(response):
+
+    return HttpResponse("200")

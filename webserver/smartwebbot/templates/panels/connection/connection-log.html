@@ -35,6 +35,14 @@
         </pre>
         {{text}}
     </div>
+    <h3>my G-code input:</h3>
+    <form action="log/send-gcode" class="gcodesend" methode="POST" id="gcodesender">
+        {% csrf_token %}
+        
+        <input type="text" name="gcode-input">
+
+        <input type="submit" name="send-gcode" value="send gcode">
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -133,6 +141,34 @@
     $(document).ready(function() {
         update();
     });   
+
+ //herber likes to send gcode
+ $('#gcodesender').submit(function(evt) {
+        evt.preventDefault();
+        let formData = new FormData($(this)[0]);
+        $.ajaxSetup({
+        // make sure to send the header
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        });
+        $.ajax({
+            url: 'log/send_gcode',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $('#success').show();
+                $('#scsmsg').text("custom g-code send");
+                loadlog(true);
+            },
+            error: function(data){
+                console.log('Error: ' + data)
+            
+            }
+        });
+    });
 
 </script>
 

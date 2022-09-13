@@ -92,7 +92,7 @@ body {
 
 .mainpanel.terminal {
   width: 90%;
-  height: 400px;
+  height: 300px;
   padding: 10px;
   background: #000;
   color: #0f0;
@@ -108,6 +108,19 @@ body {
   overflow-x: auto;
   overflow-y: scroll;
 }
+
+.gcodesend{
+    margin: 0%;
+    padding: 10px;
+    width: 90%;
+    color: black;
+
+}
+
+.gcodesend.button{
+    width: 200px;
+}
+
 .btn:hover > .rotating {
     transition: all 1.5s ease-out;
     transform: rotate(1800deg);
