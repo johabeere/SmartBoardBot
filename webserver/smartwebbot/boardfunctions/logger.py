@@ -15,8 +15,10 @@ def load_logs():
     data=""
     textfile=open(path)
     for line in textfile.readlines():
-        if ("DEBUG" in line and flags[1]) or ("INFO" in line and flags[2]) or ("ERROR" in line and flags[3])  or ("WARNING" in line and flags[4]) or ("CRITICAL" in line and flags[5]):
-            #data+=(line + '\n')
+        if ("DEBUG" in line and not flags[1]) or ("INFO" in line and not flags[2]) or ("ERROR" in line and not flags[3])  or ("WARNING" in line and not flags[4]) or ("CRITICAL" in line and not flags[5]):
+            #Nothing happens, catches every line which is to be ignored
+            pass
+        elif flags[0]:
             data+=line 
     textfile.close()
     return data

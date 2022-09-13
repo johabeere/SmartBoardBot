@@ -1,7 +1,7 @@
 import json
 
 from django.http import HttpResponse, HttpResponseRedirect
-from smartwebbot.boardfunctions import logger
+from smartwebbot.boardfunctions import logger, engine
 from django.shortcuts import render
 
 
@@ -12,7 +12,7 @@ def getlogs(request):
     #return render(request, "panels/connection/connection-log.html", {"text":text})
     return HttpResponse(text)
 def applyFilters(request):
-    logger.flags[0]=bool(request.POST.get('all'))
+    logger.flags[0]=bool(request.POST.get('all')) ## enables Tracebacks and other Multifile Messages
     logger.flags[1]=bool(request.POST.get('debug'))
     logger.flags[2]=bool(request.POST.get('info'))
     logger.flags[3]=bool(request.POST.get('error'))
@@ -26,6 +26,7 @@ def clearlogs(request):
 def update_log(request):
     return HttpResponse(logger.check_new());
 
-def send_gcode(response):
-
+def send_gcode(request):
+    engine.serialsend(str.encode(str(request.POST.get('gcode-input'))), True)
+    logger.log("I got a gcode", 30)
     return HttpResponse("200")

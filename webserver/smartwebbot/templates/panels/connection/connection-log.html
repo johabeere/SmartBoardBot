@@ -35,13 +35,13 @@
         </pre>
         {{text}}
     </div>
-    <h3>my G-code input:</h3>
+    <h3>G-code input:</h3>
     <form action="log/send-gcode" class="gcodesend" methode="POST" id="gcodesender">
         {% csrf_token %}
         
-        <input type="text" name="gcode-input">
+        <input type="text" id="gcode-input">
 
-        <input type="submit" name="send-gcode" value="send gcode">
+        <input type="submit" id="send-gcode" value="send gcode">
     </form>
 </div>
 
