@@ -16,6 +16,7 @@ from smartwebbot.models.Image import Image
 from smartwebbot.models.VectorGraphic import VectorGraphic
 from smartwebbot.boardfunctions import boardcontroller as controller
 
+
 IDLE = 0
 
 ERROR = -1
@@ -68,9 +69,7 @@ def start_drawing_convert_img(request):
 def start_drawing(request):
     slicer = request.POST.get('slicer')
 
-    controller.execute(parser.parse, slicer,
-                       os.getcwd() + "/smartwebbot/static/svg/svg" + str(parser.getSourceIndex()) + ".svg",
-                       os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(parser.getNextTargetIndex()) + ".gcode")
+    controller.execute(parser.parse, request.user, slicer,os.getcwd()+"/smartwebbot/static/svg/svg"+str(converter.getSourceIndex())+".svg")
     while controller.getStatus() == "WORKING":
         sleep(0.5)
     if controller.getStatus() != "FINISHED":

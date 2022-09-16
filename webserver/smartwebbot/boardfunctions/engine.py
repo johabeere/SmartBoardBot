@@ -18,7 +18,7 @@ def stopit():
     stopped = True
 
 
-def serialsend(gline, last=False):
+def serialsend(line, last=False):
     ser = serial.Serial('/dev/ttyUSB0', 250000)
     if(ser.isOpen() == False):
         ser.open()

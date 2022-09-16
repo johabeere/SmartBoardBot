@@ -6,8 +6,10 @@ import svg_to_gcode
 from svg_to_gcode.svg_parser import parse_file
 from svg_to_gcode import UNITS
 from svg_to_gcode.compiler import Compiler, interfaces
+from smartwebbot.models.Document import Document
 
-def parse(slicer, source, target):
+
+def parse(user, slicer, source):
     logging.basicConfig(level=logging.NOTSET)
     logging.info("Starting parsing of files: \n " + source + "\nto\n" + target)
 
@@ -23,7 +25,7 @@ def parse(slicer, source, target):
 
         gcode_compiler.append_curves(curves)
         gcode_compiler.unit = "mm"
-        gcode_compiler.compile_to_file(target, passes=1)
+        Document.create(user, 'ICH HASSE MENSCHEN', gcode_compiler.compile(passes=1),'GCODE') 
 
     else:
         logging.info("Using new slicer")
