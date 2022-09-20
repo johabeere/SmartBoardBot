@@ -6,7 +6,7 @@ import svg_to_gcode
 from svg_to_gcode.svg_parser import parse_file
 from svg_to_gcode import UNITS
 from svg_to_gcode.compiler import Compiler, interfaces
-from SmartBoardBot.webserver.smartwebbot import constants
+from webserver.smartwebbot import constants
 from smartwebbot.models.Document import Document
 
 

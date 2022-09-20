@@ -2,7 +2,7 @@ from asyncio import constants
 from asyncore import file_wrapper
 import os
 from xml.dom.minidom import DocumentType
-from SmartBoardBot.webserver.smartwebbot.models.Document import Document
+from smartwebbot.models.Document import Document
 
 from smartwebbot.boardfunctions import boardcontroller
 import time

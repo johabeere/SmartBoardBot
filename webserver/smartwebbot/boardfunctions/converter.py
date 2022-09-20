@@ -3,9 +3,9 @@ import logging
 import os
 import subprocess
 
-from SmartBoardBot.webserver.smartwebbot.boardfunctions import hatched
+from smartwebbot.boardfunctions import hatched
 
-from SmartBoardBot.webserver.smartwebbot.models.Document import Document
+from smartwebbot.models.Document import Document
 
 
 def convert(user):
