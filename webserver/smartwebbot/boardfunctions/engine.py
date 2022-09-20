@@ -1,4 +1,8 @@
+from asyncio import constants
+from asyncore import file_wrapper
 import os
+from xml.dom.minidom import DocumentType
+from SmartBoardBot.webserver.smartwebbot.models.Document import Document
 
 from smartwebbot.boardfunctions import boardcontroller
 import time
@@ -49,16 +53,21 @@ def home():
     time.sleep(3)
     return 0
 
-def draw(scale, color, offsetx, offsety, path):
-    logger.log("Sending file " + path)    
-    file = open(path, 'r')
+def draw(scale, color, offsetx, offsety):
+    logger.log("Getting latest gcode from Database")    
+
+
+    mydata = Document.objects.latest(fileType=constants.GCODE).data
+
     ##NO IDEA WHAT THE FOLLOWING THREE LINES DO; KEEPING THEM JUST IN CASE....
     #for i in range(0,5):
     #    answer = ser.readline().decode("UTF-8")
     #    logging.info("Got answer " + answer)
+
+
     home()
 
-    for line in file:
+    for line in mydata:
         global stopped
         if stopped:
             if color=="RED":
@@ -106,15 +115,3 @@ def draw(scale, color, offsetx, offsety, path):
     ##Goodbye Message; Reports Current Position for Debugging
     serialsend("M114;\n", True)
 
-
-def getNextSourceIndex():
-    return getSourceIndex() + 1
-
-
-def getSourceIndex():
-    img_dir = os.getcwd() + "/smartwebbot/static/gcode/"
-
-    for i in range(0, 100000):
-        if not os.path.exists(img_dir + "gcode" + str(i) + ".gcode"):
-            return i - 1
-    return -1

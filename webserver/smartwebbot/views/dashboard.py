@@ -1,3 +1,4 @@
+from asyncio import constants
 import json
 import logging
 import os
@@ -36,16 +37,12 @@ DONE_SCAN = 203
 
 def start_drawing_handler(request):
     file = request.FILES['file']
-    if file.name.endswith('.jpg'):
-        fs = FileSystemStorage(location=os.getcwd() + '/smartwebbot/static/jpg/')
-        filename = fs.save(os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getNextSourceIndex()) + ".jpg",
-                           file)
+    if file.name.endswith('.jpg') or file.name.endswith('.jpeg'):
+        Document.create(request.user,"Uploaded_JPG",file,"JPEG",True)
         t1 = threading.Thread(target=start_drawing_convert_img, args=[request])
         t1.start()
     elif file.name.endswith('.svg'):
-        fs = FileSystemStorage(location=os.getcwd() + '/smartwebbot/static/svg/')
-        filename = fs.save(os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg",
-                           file)
+        Document.create(request.user,"Uploaded_SVG",file,"SVG",True)
         t1 = threading.Thread(target=start_drawing, args=[request])
         t1.start()
     # sleep(0.1)
@@ -56,9 +53,7 @@ def start_drawing_handler(request):
 
 
 def start_drawing_convert_img(request):
-    controller.execute(converter.convert,
-                       os.getcwd() + "/smartwebbot/static/jpg/jpg" + str(converter.getSourceIndex()) + ".jpg",
-                       os.getcwd() + "/smartwebbot/static/svg/svg" + str(converter.getNextTargetIndex()) + ".svg")
+    controller.execute(converter.convert,request.user)
     while controller.getStatus() == "WORKING":
         sleep(0.5)
     if controller.getStatus() != "FINISHED":
@@ -69,7 +64,7 @@ def start_drawing_convert_img(request):
 def start_drawing(request):
     slicer = request.POST.get('slicer')
 
-    controller.execute(parser.parse, request.user, slicer,os.getcwd()+"/smartwebbot/static/svg/svg"+str(converter.getSourceIndex())+".svg")
+    controller.execute(parser.parse, request.user, slicer)
     while controller.getStatus() == "WORKING":
         sleep(0.5)
     if controller.getStatus() != "FINISHED":
@@ -88,8 +83,7 @@ def start_drawing(request):
 
     sleep(0.1) 
 
-    controller.execute(engine.draw, scale, color, offsetx, offsety,
-                       os.getcwd() + "/smartwebbot/static/gcode/gcode" + str(engine.getSourceIndex()) + ".gcode")
+    controller.execute(engine.draw, scale, color, offsetx, offsety)
 
     return HttpResponse("200")
 

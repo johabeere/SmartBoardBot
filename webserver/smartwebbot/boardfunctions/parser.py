@@ -6,52 +6,37 @@ import svg_to_gcode
 from svg_to_gcode.svg_parser import parse_file
 from svg_to_gcode import UNITS
 from svg_to_gcode.compiler import Compiler, interfaces
+from SmartBoardBot.webserver.smartwebbot import constants
 from smartwebbot.models.Document import Document
 
 
-def parse(user, slicer, source):
+def parse(user, slicer):
     logging.basicConfig(level=logging.NOTSET)
-    logging.info("Starting parsing of files: \n " + source + "\nto\n" + target)
+    logging.info("Starting from svg to gcode with latest file from Database")
 
     # Instantiate a compiler, specifying the interface type and the speed at which the tool should move. pass_depth controls
     # how far down the tool moves after every pass. Set it to 0 if your machine does not support Z axis movement.
     #gcode_compiler = Compiler(interfaces.Gcode, movement_speed=1000, cutting_speed=300, pass_depth=0)
 
+    myData=Document.objects.latest(fileType=constants.SVG).data
+    
     if slicer == "OLD":
         logging.info("Using old slicer")
         gcode_compiler = Compiler(interfaces.Gcode, movement_speed=8000, cutting_speed=2000, pass_depth=0)
 
-        curves = parse_file(source) # Parse an svg file into geometric curves
+        curves = parse_file(myData) # Parse an svg file into geometric curves
 
         gcode_compiler.append_curves(curves)
         gcode_compiler.unit = "mm"
-        Document.create(user, 'ICH HASSE MENSCHEN', gcode_compiler.compile(passes=1),'GCODE') 
+        Document.create(user, 'compiled gcode', gcode_compiler.compile(passes=1),'GCODE') 
 
     else:
-        logging.info("Using new slicer")
-        output = subprocess.check_output(["python2.7", "svg2gcode/svg2gcode.py", source, target])
-        logging.info("Got return: \n" + str(output))
+
+
+        logging.info("LOOKOUT -> New Slicer not implemented yet")
+        #output = subprocess.check_output(["python2.7", "svg2gcode/svg2gcode.py", myData, target])
+
+
     #generate_gcode(source, target)
     logging.info("Finished parsing.")
 
-def getNextSourceIndex():
-    return getSourceIndex() + 1
-
-def getNextTargetIndex():
-    return getTargetIndex() + 1
-
-def getSourceIndex():
-    img_dir = os.getcwd() + "/smartwebbot/static/svg/"
-
-    for i in range(0, 100000):
-        if not os.path.exists(img_dir + "svg" + str(i) + ".svg"):
-            return i - 1
-    return -1
-
-def getTargetIndex():
-    img_dir = os.getcwd() + "/smartwebbot/static/gcode/"
-
-    for i in range(0, 100000):
-        if not os.path.exists(img_dir + "gcode" + str(i) + ".gcode"):
-            return i-1
-    return -1
