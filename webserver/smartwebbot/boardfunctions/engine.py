@@ -4,15 +4,12 @@ import os
 from xml.dom.minidom import DocumentType
 from smartwebbot.models.Document import Document
 
-from smartwebbot.boardfunctions import boardcontroller
 import time
 import logging
 import serial
 from smartwebbot.boardfunctions import pencontroller, logger
 
 stopped = False
-
-
 
 
 def stopit():

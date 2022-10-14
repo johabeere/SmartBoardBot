@@ -3,8 +3,9 @@ import threading
 import time
 import serial
 
-from smartwebbot.boardfunctions.pencontroller import liftPen
-from smartwebbot.boardfunctions.engine import stopit
+from smartwebbot.boardfunctions import pencontroller
+from smartwebbot.boardfunctions import engine
+
 
 status = "IDLE"
 thread = None
@@ -23,7 +24,7 @@ class ExecutionThread(threading.Thread):
         logging.basicConfig(level=logging.NOTSET)
         logging.info("Stopping action")
         if self.target.__name__ == "draw":
-            stopit()
+            engine.stopit()
         self._kill.set()
 
 
@@ -69,7 +70,7 @@ def cancel():
         thread.kill()
 
     if pen == "LOW":
-        liftPen()
+        pencontroller.liftPen()
 
     status = "CANCELED"
 
