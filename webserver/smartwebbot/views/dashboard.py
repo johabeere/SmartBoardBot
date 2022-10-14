@@ -17,7 +17,6 @@ from smartwebbot.models.Image import Image
 from smartwebbot.models.VectorGraphic import VectorGraphic
 from smartwebbot.boardfunctions import boardcontroller as controller
 
-
 IDLE = 0
 
 ERROR = -1
@@ -33,16 +32,14 @@ STITCHING = 202
 DONE_SCAN = 203
 
 
-
-
 def start_drawing_handler(request):
     file = request.FILES['file']
     if file.name.endswith('.jpg') or file.name.endswith('.jpeg'):
-        Document.create(request.user,"Uploaded_JPG",file,"JPEG",True)
+        Document.create(request.user, "Uploaded_JPG", file, "JPEG", True)
         t1 = threading.Thread(target=start_drawing_convert_img, args=[request])
         t1.start()
     elif file.name.endswith('.svg'):
-        Document.create(request.user,"Uploaded_SVG",file,"SVG",True)
+        Document.create(request.user, "Uploaded_SVG", file, "SVG", True)
         t1 = threading.Thread(target=start_drawing, args=[request])
         t1.start()
     # sleep(0.1)
@@ -53,7 +50,7 @@ def start_drawing_handler(request):
 
 
 def start_drawing_convert_img(request):
-    controller.execute(converter.convert,request.user)
+    controller.execute(converter.convert, request.user)
     while controller.getStatus() == "WORKING":
         sleep(0.5)
     if controller.getStatus() != "FINISHED":
@@ -76,12 +73,12 @@ def start_drawing(request):
     offsety = request.POST.get('y-start')
 
     scale = request.POST.get('scale')
-    if scale=="":
+    if scale == "":
         scale = "1"
 
     color = request.POST.get('color')
 
-    sleep(0.1) 
+    sleep(0.1)
 
     controller.execute(engine.draw, scale, color, offsetx, offsety)
 
@@ -89,8 +86,6 @@ def start_drawing(request):
 
 
 def start_scan(request):
-    controller = getController()
-
     return HttpResponse("200")
 
 

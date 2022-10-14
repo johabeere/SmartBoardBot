@@ -2,6 +2,8 @@ from asyncio import constants
 from asyncore import file_wrapper
 import os
 from xml.dom.minidom import DocumentType
+
+from django.conf import settings
 from smartwebbot.models.Document import Document
 
 import time
@@ -10,6 +12,13 @@ import serial
 from smartwebbot.boardfunctions import pencontroller, logger
 
 stopped = False
+
+if settings.LIVE:
+    ser = serial.Serial('/dev/ttyUSB0', 250000)
+    logger.log("Initialized serial port in LIVE mode")
+else:
+    logger.log("Not in LIVE mode - not sending data via USB")
+    ser = None
 
 
 def stopit():
@@ -20,27 +29,31 @@ def stopit():
 
 
 def serialsend(line, last=False):
-    ser = serial.Serial('/dev/ttyUSB0', 250000)
-    if(ser.isOpen() == False):
-        ser.open()
-        logger.log("opening Serial now...")
-    ser.timeout = 1    
+    if settings.LIVE:
+        if(ser.isOpen() == False):
+            ser.open()
+            logger.log("opening Serial now...")
+        ser.timeout = 1
 
-    ser.write(str.encode(line))
-    if "G28" in line:
-        logger.log("sending HOMING Signal: "+line)
+        ser.write(str.encode(line))
+        if "G28" in line:
+            logger.log("sending HOMING Signal: "+line)
+        else:
+            logger.log("send\t"+line+"\t to Controller." )
+
+        answer = ser.readline().decode("UTF-8")
+        while ("processing" in answer) or (not "ok" in answer):
+            answer = ser.readline().decode("UTF-8")
+            logging.info("Got answer " + answer)
+        logger.log ("got answer:\t"+answer)
+        if(last):
+            ser.close()
+            logger.log("closing Serial now....")
+        return answer
     else:
-        logger.log("send\t"+line+"\t to Controller." )
-    
-    answer = ser.readline().decode("UTF-8")
-    while ("processing" in answer) or (not "ok" in answer):
-        answer = ser.readline().decode("UTF-8") 
-        logging.info("Got answer " + answer)
-    logger.log ("got answer:\t"+answer)
-    if(last):
-        ser.close()
-        logger.log("closing Serial now....")
-    return answer
+        logging.basicConfig(level=logging.NOTSET)
+        logging.info("[USB]: Would send line " + str(line))
+        logger.log("[USB]: Would send line " + str(line))
 
 def home():
     serialsend("G28 X;\n")
