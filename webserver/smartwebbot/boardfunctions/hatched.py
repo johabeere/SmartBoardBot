@@ -141,8 +141,8 @@ def _build_mask(cnt):
 
 
 def _load_image(
-    #file_path: str,
-    inImg,
+    file_path: str,
+    #inImg,
     blur_radius: int = 10,
     image_scale: float = 1.0,
     interpolation: int = cv2.INTER_LINEAR,
@@ -150,8 +150,8 @@ def _load_image(
     invert: bool = False,
 ) -> np.ndarray:
     # Load the image, resize it and apply blur
-    ##img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
-    img = inImg
+    img = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+    #img = inImg
     scale_x = int(img.shape[1] * image_scale)
     scale_y = int(img.shape[0] * image_scale)
     img = cv2.resize(img, (scale_x, scale_y), interpolation=interpolation)
@@ -253,6 +253,25 @@ def _build_hatch(
     return (MultiLineString(all_lines), *contours)
 
 
+def _save_to_svg(file_path: str, w: int, h: int, vectors: Iterable[MultiLineString]) -> None:
+    dwg = svgwrite.Drawing(file_path, size=(w, h), profile="tiny", debug=False)
+
+    dwg.add(
+        dwg.path(
+            " ".join(
+                " ".join(
+                    ("M" + " L".join(f"{x},{y}" for x, y in ls.coords)) for ls in mls.geoms
+                )
+                for mls in vectors
+            ),
+            fill="none",
+            stroke="black",
+        )
+    )
+
+    dwg.save()
+
+
 def hatch(
     inImg,
     hatch_pitch: float = 5,
@@ -291,7 +310,8 @@ def hatch(
     """
 
     img = _load_image(
-        inImg=inImg,
+        file_path=inImg,
+        #inImg=inImg,
         blur_radius=blur_radius,
         image_scale=image_scale,
         interpolation=interpolation,
@@ -307,6 +327,10 @@ def hatch(
         circular=circular,
         center=center,
         hatch_angle=hatch_angle,
+    )
+
+    _save_to_svg(
+        os.path.splitext(inImg)[0] + ".svg", img.shape[0], img.shape[1], [mls]
     )
 
     return mls

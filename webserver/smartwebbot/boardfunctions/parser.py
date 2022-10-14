@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+import string
 import subprocess
 
 import svg_to_gcode
@@ -18,17 +20,26 @@ def parse(user, slicer):
     # how far down the tool moves after every pass. Set it to 0 if your machine does not support Z axis movement.
     #gcode_compiler = Compiler(interfaces.Gcode, movement_speed=1000, cutting_speed=300, pass_depth=0)
 
-    myData=Document.objects.latest(fileType=constants.SVG).data
+    myData=Document.objects.filter(fileType=constants.SVG).latest('created_on').data
     
     if slicer == "OLD":
         logging.info("Using old slicer")
         gcode_compiler = Compiler(interfaces.Gcode, movement_speed=8000, cutting_speed=2000, pass_depth=0)
 
-        curves = parse_file(myData) # Parse an svg file into geometric curves
+        letters = string.ascii_lowercase
+        random_name = ''.join(random.choice(letters) for i in range(20))
+        file = open(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg", "wb")
+        file.write(myData)
+        file.close()
+
+        # Refusing to write comments on code due to the 3 litres of beer the evening before
+        curves = parse_file(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg") # Parse an svg file into geometric curves
+
+        os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg")
 
         gcode_compiler.append_curves(curves)
         gcode_compiler.unit = "mm"
-        Document.create(user, 'compiled gcode', gcode_compiler.compile(passes=1),'GCODE') 
+        Document.create(user, 'compiled gcode', str.encode(gcode_compiler.compile(passes=1)),'GCODE')
 
     else:
 

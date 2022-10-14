@@ -35,11 +35,11 @@ DONE_SCAN = 203
 def start_drawing_handler(request):
     file = request.FILES['file']
     if file.name.endswith('.jpg') or file.name.endswith('.jpeg'):
-        Document.create(request.user, "Uploaded_JPG", file, "JPEG", True)
+        Document.create(request.user, "Uploaded_JPG", file.read(), "JPEG", True)
         t1 = threading.Thread(target=start_drawing_convert_img, args=[request])
         t1.start()
     elif file.name.endswith('.svg'):
-        Document.create(request.user, "Uploaded_SVG", file, "SVG", True)
+        Document.create(request.user, "Uploaded_SVG", file.read(), "SVG", True)
         t1 = threading.Thread(target=start_drawing, args=[request])
         t1.start()
     # sleep(0.1)

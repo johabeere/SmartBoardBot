@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Media(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, max_length=255)
+    slug = models.SlugField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
 
     type = models.IntegerField()

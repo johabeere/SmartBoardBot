@@ -1,10 +1,10 @@
-from asyncio import constants
 from asyncore import file_wrapper
 import os
 from xml.dom.minidom import DocumentType
 
 from django.conf import settings
 from smartwebbot.models.Document import Document
+from smartwebbot import constants
 
 import time
 import logging
@@ -67,7 +67,7 @@ def draw(scale, color, offsetx, offsety):
     logger.log("Getting latest gcode from Database")    
 
 
-    mydata = Document.objects.latest(fileType=constants.GCODE).data
+    mydata = Document.objects.filter(fileType=constants.GCODE).latest('created_on').data.decode("utf-8")
 
     ##NO IDEA WHAT THE FOLLOWING THREE LINES DO; KEEPING THEM JUST IN CASE....
     #for i in range(0,5):
@@ -77,7 +77,7 @@ def draw(scale, color, offsetx, offsety):
 
     home()
 
-    for line in mydata:
+    for line in mydata.split("\n"):
         global stopped
         if stopped:
             if color=="RED":

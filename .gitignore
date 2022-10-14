@@ -3,5 +3,7 @@
 *.gcode
 *.log
 /webserver/smartwebbot/static/img/photos/*
+/webserver/smartwebbot/tmp/*
 *.pyc
 *.pptx
+/webserver/db.sqlite3

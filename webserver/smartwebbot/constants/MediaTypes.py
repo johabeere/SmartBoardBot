@@ -4,6 +4,8 @@ JPEG = 2
 PDF = 3
 SVG = 4
 
+GCODE = 10
+
 UPLOAD = 100
 SCAN = 200
 
