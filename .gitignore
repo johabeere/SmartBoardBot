@@ -5,5 +5,7 @@
 /webserver/smartwebbot/static/img/photos/*
 /webserver/smartwebbot/tmp/*
 *.pyc
+*.cpython-39.pyc
+*/__pycache__/
 *.pptx
 /webserver/db.sqlite3
