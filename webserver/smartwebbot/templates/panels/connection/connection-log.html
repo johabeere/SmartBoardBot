@@ -36,12 +36,12 @@
         {{text}}
     </div>
     <h3>G-code input:</h3>
-    <form action="log/send-gcode" class="gcodesend" methode="POST" id="gcodesender">
+    <form action="log/send_gcode" class="gcodesend" methode="POST" id="gcodesender" enctype="multipart/form-data">
         {% csrf_token %}
         
-        <input type="text" id="gcode-input">
+        <input type="text" id="gcode-input" name="gcode-input"> 
 
-        <input type="submit" id="send-gcode" value="send gcode">
+        <input type="submit" id="send-gcode" name="send-gcode" value="send gcode">
     </form>
 </div>
 
@@ -161,6 +161,7 @@
             success: function (data) {
                 $('#success').show();
                 $('#scsmsg').text("custom g-code send");
+                //console.log('send ' + data)
                 loadlog(true);
             },
             error: function(data){

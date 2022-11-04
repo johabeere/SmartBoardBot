@@ -9,6 +9,8 @@ from smartwebbot import constants
 import time
 import logging
 import serial
+import random
+import string
 from smartwebbot.boardfunctions import pencontroller, logger
 
 stopped = False
@@ -19,7 +21,9 @@ if settings.LIVE:
 else:
     logger.log("Not in LIVE mode - not sending data via USB")
     ser = None
-
+if settings.FAKEGCODE:
+    letters = string.ascii_lowercase
+    file = open(os.getcwd()+"/smartwebbot/static/gcode/"+"TGC"+''.join(random.choice(letters) for i in range(5)) + ".gcode", "w")
 
 def stopit():
     global stopped
@@ -39,21 +43,28 @@ def serialsend(line, last=False):
         if "G28" in line:
             logger.log("sending HOMING Signal: "+line)
         else:
-            logger.log("send\t"+line+"\t to Controller." )
+            logger.log("sending\t"+line+"\t to Controller." )
 
         answer = ser.readline().decode("UTF-8")
-        while ("processing" in answer) or (not "ok" in answer):
+        while (answer!=""):
+            logging.info("Got answer: " + answer)
             answer = ser.readline().decode("UTF-8")
-            logging.info("Got answer " + answer)
-        logger.log ("got answer:\t"+answer)
+        #while ("processing" in answer) or ("busy" in answer):
+        #    answer = ser.readline().decode("UTF-8")
+        #    logging.info("Got answer " + answer)
+        #logger.log ("got answer:\t"+answer)
         if(last):
             ser.close()
             logger.log("closing Serial now....")
         return answer
     else:
         logging.basicConfig(level=logging.NOTSET)
-        logging.info("[USB]: Would send line " + str(line))
-        logger.log("[USB]: Would send line " + str(line))
+        logger.log("[USB]: Would send line " + str(line), 20)
+        if settings.FAKEGCODE:
+            file.write(str(line) + '\n')
+            if(last):
+                file.close()
+                logger.log("closing Fake-GCode now....")
 
 def home():
     serialsend("G28 X;\n")
