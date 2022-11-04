@@ -46,10 +46,17 @@ def serialsend(line, last=False):
             logger.log("sending\t"+line+"\t to Controller." )
 
         answer = ser.readline().decode("UTF-8")
-        while (answer!=""):
-            logging.info("Got answer: " + answer)
-            answer = ser.readline().decode("UTF-8")
-        time.sleep(0.1)
+        
+        
+        if "G1" in line:
+            while (not "ok" in answer):
+                logging.info("Got answer: " + answer)
+                answer=ser.readline().decode("UTF-8")
+        else:  
+             while (answer!=""):
+                 logging.info("Got answer: " + answer)
+                 answer = ser.readline().decode("UTF-8")
+             time.sleep(0.1)
         #while ("processing" in answer) or ("busy" in answer):
         #    answer = ser.readline().decode("UTF-8")
         #    logging.info("Got answer " + answer)
@@ -75,12 +82,12 @@ def home():
     time.sleep(3)
     return 0
 
-def draw(scale, color, offsetx, offsety):
+def draw(offsety, color, offsetx, scale):
     logger.log("Getting latest gcode from Database")    
 
 
     mydata = Document.objects.filter(fileType=constants.GCODE).latest('created_on').data.decode("UTF-8")
-    logger.log(mydata)
+    #logger.log(mydata)
     ##NO IDEA WHAT THE FOLLOWING THREE LINES DO; KEEPING THEM JUST IN CASE....
     #for i in range(0,5):
     #    answer = ser.readline().decode("UTF-8")
@@ -93,21 +100,21 @@ def draw(scale, color, offsetx, offsety):
         global stopped
         if stopped:
             if color=="RED":
-                serialsend("M42 P5 S240;\n")
+                serialsend("M280 P1 S60;\n")
             elif color=="BLUE":
-                serialsend("M42 P4 S110;\n")
+                serialsend("M280 P2 S20;\n")
             pencontroller.lowerPen()
             stopped = False
             return
         if "M5" in line:
-            time.sleep(3)
+            #time.sleep(3)
             pencontroller.liftPen()
             serialsend("M400;\n")
 
             if color=="RED":
-                serialsend("M42 P5 S240;\n")
+                serialsend("M280 P1 S60\n")
             elif color=="BLUE":
-                serialsend("M42 P4 S110;\n")
+                serialsend("M280 P2 S20;\n")
             
         elif "M3" in line:
             #time.sleep(3)
@@ -116,23 +123,27 @@ def draw(scale, color, offsetx, offsety):
             serialsend("M400;\n")
 
             if color=="RED":
-                serialsend("M42 P5 S110;\n")
+                serialsend("M280 P1 S90;\n")
             elif color=="BLUE":
-                serialsend("M42 P4 S240;\n")
+                serialsend("M280 P2 S95;\n")
         
         elif "G1" in line:
             firstpart = line.split("X")[0]
             ###REMOVE THIS ABOMINATION!!!!###
-            xcoord = float((line.split("X")[1]).split("Y")[0][:-1]) + float("00" + offsetx)
-            ycoord = float((line.split("X")[1]).split("Y")[1][:-2]) + float("00" + offsety)
-            line = firstpart + "X" + str(ycoord*float(scale)) + " Y" + str(50+xcoord*float(scale)) + ";\n"
+            logger.log("Offsets are: "+ offsetx+";"+offsety+" , Scale is: "+str(float(scale)))
+            xcoord = float((line.split("X")[1]).split("Y")[0][:-1])  
+            
+            ycoord = float((line.split("X")[1]).split("Y")[1][:-2])  
+            logger.log("Coords are: ("+str(xcoord)+";"+str(ycoord)+")")
+            line = firstpart + "X" + str(ycoord*float(scale)+ float("00" + offsety)) + " Y" + str(xcoord*float(scale)+float("00"+offsetx)) + ";\n"
+            #logger.log("Xcord;\t"+xcoord +"Ycord;\t" + ycoord)
             serialsend(line)
         
         else:
             #Catch any other Gcode (in Theory never called)
             serialsend(line)        
 
-        time.sleep(0.1)
+        #time.sleep(0.1)
     
     ##Goodbye Message; Reports Current Position for Debugging
     serialsend("M114;\n", True)
