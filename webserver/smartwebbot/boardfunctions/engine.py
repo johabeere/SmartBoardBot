@@ -49,6 +49,7 @@ def serialsend(line, last=False):
         while (answer!=""):
             logging.info("Got answer: " + answer)
             answer = ser.readline().decode("UTF-8")
+        time.sleep(0.1)
         #while ("processing" in answer) or ("busy" in answer):
         #    answer = ser.readline().decode("UTF-8")
         #    logging.info("Got answer " + answer)
@@ -78,8 +79,8 @@ def draw(scale, color, offsetx, offsety):
     logger.log("Getting latest gcode from Database")    
 
 
-    mydata = Document.objects.filter(fileType=constants.GCODE).latest('created_on').data.decode("utf-8")
-
+    mydata = Document.objects.filter(fileType=constants.GCODE).latest('created_on').data.decode("UTF-8")
+    logger.log(mydata)
     ##NO IDEA WHAT THE FOLLOWING THREE LINES DO; KEEPING THEM JUST IN CASE....
     #for i in range(0,5):
     #    answer = ser.readline().decode("UTF-8")

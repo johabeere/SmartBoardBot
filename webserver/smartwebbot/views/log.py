@@ -29,7 +29,7 @@ def update_log(request):
 def send_gcode(request):
     tmp = str(request.POST.get('gcode-input'))
     #logger.log("I am sending: " + tmp)    
-    engine.serialsend(tmp, False)
+    engine.serialsend(tmp + ";\n", False)
 
     #logger.log("I finished sending!", 30)
     return HttpResponse("200")
