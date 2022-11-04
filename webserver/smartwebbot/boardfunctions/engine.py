@@ -121,9 +121,24 @@ def draw(scale, color, offsetx, offsety):
                 serialsend("M42 P4 S240;\n")
         
         elif "G1" in line:
+            # returns "G1 "
             firstpart = line.split("X")[0]
+
             ###REMOVE THIS ABOMINATION!!!!###
+            # line.split("X") returns {"G1 "}{"123 Y456;\n"}
+            # (line.split("X")[1]).split("Y") returns {"123 "} {"456;\n"}
+            # (line.split("X")[1]).split("Y")[0] returns {"123 "}
+            # (line.split("X")[1]).split("Y")[0][:-1] returns {"123"} (cuts the last character)
+            # + float("00" + offsetx) is obvious.
+
             xcoord = float((line.split("X")[1]).split("Y")[0][:-1]) + float("00" + offsetx)
+
+            # line.split("X") returns {"G1 "}{"123 Y456;\n"}
+            # (line.split("X")[1]).split("Y") returns {"123 "} {"456;\n"}
+            # (line.split("X")[1]).split("Y")[1] returns {"123;\n"}
+            # (line.split("X")[1]).split("Y")[0][:-2] returns {"123"} (cuts the last two characters)
+            # + float("00" + offsety) is obvious.
+
             ycoord = float((line.split("X")[1]).split("Y")[1][:-2]) + float("00" + offsety)
             line = firstpart + "X" + str(ycoord*float(scale)) + " Y" + str(50+xcoord*float(scale)) + ";\n"
             serialsend(line)
