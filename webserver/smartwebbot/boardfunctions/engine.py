@@ -128,7 +128,9 @@ def draw(offsety, color, offsetx, scale):
                 serialsend("M280 P2 S95;\n")
         
         elif "G1" in line:
+            # returns "G1 "
             firstpart = line.split("X")[0]
+
             ###REMOVE THIS ABOMINATION!!!!###
             logger.log("Offsets are: "+ offsetx+";"+offsety+" , Scale is: "+str(float(scale)))
             xcoord = float((line.split("X")[1]).split("Y")[0][:-1])  
