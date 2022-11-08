@@ -23,7 +23,7 @@ def parse(user, slicer):
     myData=Document.objects.filter(fileType=constants.SVG).latest('created_on').data
     if slicer == "OLD":
         logging.info("Using old slicer")
-        gcode_compiler = Compiler(interfaces.Gcode, movement_speed=8000, cutting_speed=2000, pass_depth=0)
+        gcode_compiler = Compiler(interfaces.Gcode, movement_speed=2000, cutting_speed=2000, pass_depth=0)
 
         letters = string.ascii_lowercase
         random_name = ''.join(random.choice(letters) for i in range(20))
