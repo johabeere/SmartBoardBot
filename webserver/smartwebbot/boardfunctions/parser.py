@@ -25,8 +25,6 @@ def parse(user, slicer):
     myData=Document.objects.filter(fileType=constants.SVG).latest('created_on').data
     if slicer == "OLD":
         logging.info("Using old slicer")
-<<<<<<< HEAD
-
         class CustomInterface(interfaces.Gcode):
             def __init__(self):
                 super().__init__()
@@ -38,16 +36,8 @@ def parse(user, slicer):
                                      f"The interface will scale it correctly.")
 
                 return onMessage; # Turn on the fan + change laser power
-
-
-
-
-
-        gcode_compiler = Compiler(CustomInterface, movement_speed=8000, cutting_speed=2000, pass_depth=0)
-=======
+        
         gcode_compiler = Compiler(interfaces.Gcode, movement_speed=2000, cutting_speed=2000, pass_depth=0)
->>>>>>> 94c677f46ddf072326373ca5f203284cb7bc4eb2
-
         letters = string.ascii_lowercase
         random_name = ''.join(random.choice(letters) for i in range(20))
         file = open(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg", "wb")
@@ -66,7 +56,7 @@ def parse(user, slicer):
         gcodefile = open(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".gcode", "r")
         
         Document.create(user, 'compiled gcode', str.encode(gcodefile.read()),'GCODE')
-        logger.log("created db entry for\t" + random_name)
+        logging.log("created db entry for\t" + random_name)
         gcodefile.close()
 
     else:
@@ -74,7 +64,6 @@ def parse(user, slicer):
 
         logging.info("LOOKOUT -> New Slicer not implemented yet")
         #output = subprocess.check_output(["python2.7", "svg2gcode/svg2gcode.py", myData, target])
-
 
     #generate_gcode(source, target)
     logging.info("Finished parsing.")

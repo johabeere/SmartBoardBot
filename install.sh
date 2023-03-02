@@ -35,7 +35,7 @@ while read -r p; do echo -e "${grn}APT is now installing $p....${wht}" && sudo a
 EOF
 )
 echo -e "${grn}Finished installing Linux packages, moving on to Python....${wht}"
-'
+
 # install necessary Python Packages
 while read -r p; do echo -e "${grn}Now installing $p....${wht}" && sudo pip3 install $p ; done < <(cat << "EOF"
 	django==4.0.1
@@ -50,8 +50,21 @@ while read -r p; do echo -e "${grn}Now installing $p....${wht}" && sudo pip3 ins
 	svgwrite
 	scikit-image
 EOF
-)
-echo -e "${grn}Finished installing Linux packages, moving on to Python....${wht}"
-
-
+) '
+echo -e "${grn}Finished installing Python packages, moving on configuring autostart....${wht}"
+sed -i '7s#.*#$dir = ${PWD}#' start.sh
+sudo touch /etc/systemd/system/SmartBoardBot.service
+echo "[Unit]
+Description=Smart Board Bot service
+After=multi-user.target
+[Service]
+Type=simple
+Restart=always
+ExecStart=${PWD}/start.sh
+[Install]
+WantedBy=multi-user.target" >> /etc/systemd/system/SmartBoardBot.service 
+sudo systemctl daemon-reload
+sudo systemctl enable SmartBoardBot.service 
+sudo systemctl start SmartBoardBot.service
+echo -e "${grn}Successfully created and started systemd Service!"
 exit 0

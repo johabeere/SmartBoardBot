@@ -140,10 +140,10 @@ def draw(scale, color, offsetx, offsety):
     print(scale)
     print(float(scale))
 
-    #if float(maxy)*float(scale) > settings.TABLE_HEIGHT:
-    #    raise ValueError("Image too tall!")
-    #if float(maxx)*float(scale) > settings.TABLE_WIDTH:
-    #    raise ValueError("Image too wide!")
+    if float(maxy)*float(scale) > settings.TABLE_HEIGHT:
+        raise ValueError("Image too tall!")
+    if float(maxx)*float(scale) > settings.TABLE_WIDTH:
+        raise ValueError("Image too wide!")
 
     diffx = float(offsetx) - minx*float(scale)
     diffy = float(offsety) - miny*float(scale)
