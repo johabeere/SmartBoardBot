@@ -88,6 +88,7 @@ The following People contributed to this Project:
 - Benedikt Zinn
   
 <span style="text-decoration:underline">From the USA:</span>
+- Sophie Hutter
 - Lennard Kemper
 - Lara Molitor
 - Karla Nighbert
