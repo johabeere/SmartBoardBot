@@ -27,6 +27,9 @@ def update_log(request):
     return HttpResponse(logger.check_new());
 
 def send_gcode(request):
-    engine.serialsend(str.encode(str(request.POST.get('gcode-input'))), True)
-    logger.log("I got a gcode", 30)
+    tmp = str(request.POST.get('gcode-input'))
+    #logger.log("I am sending: " + tmp)    
+    engine.serialsend(tmp + ";\n", False)
+
+    #logger.log("I finished sending!", 30)
     return HttpResponse("200")

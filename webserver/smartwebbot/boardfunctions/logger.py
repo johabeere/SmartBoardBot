@@ -37,6 +37,7 @@ def log(msg, lvl=10):
 def clear_logs(): 
     # Delete the current log and create an empty one...
     os.system("truncate ./general.log -s 0")
+    os.system("rm -f ./smartwebbot/static/gcode/TGC*")
     return 0
 def check_new():
     global news

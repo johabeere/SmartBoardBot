@@ -23,9 +23,9 @@ def parse(user, slicer):
     #gcode_compiler = Compiler(interfaces.Gcode, movement_speed=1000, cutting_speed=300, pass_depth=0)
 
     myData=Document.objects.filter(fileType=constants.SVG).latest('created_on').data
-    
     if slicer == "OLD":
         logging.info("Using old slicer")
+<<<<<<< HEAD
 
         class CustomInterface(interfaces.Gcode):
             def __init__(self):
@@ -44,6 +44,9 @@ def parse(user, slicer):
 
 
         gcode_compiler = Compiler(CustomInterface, movement_speed=8000, cutting_speed=2000, pass_depth=0)
+=======
+        gcode_compiler = Compiler(interfaces.Gcode, movement_speed=2000, cutting_speed=2000, pass_depth=0)
+>>>>>>> 94c677f46ddf072326373ca5f203284cb7bc4eb2
 
         letters = string.ascii_lowercase
         random_name = ''.join(random.choice(letters) for i in range(20))
@@ -54,11 +57,17 @@ def parse(user, slicer):
         # Refusing to write comments on code due to the 3 litres of beer the evening before
         curves = parse_file(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg") # Parse an svg file into geometric curves
 
-        os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg")
+        #os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg")
 
         gcode_compiler.append_curves(curves)
         gcode_compiler.unit = "mm"
-        Document.create(user, 'compiled gcode', str.encode(gcode_compiler.compile(passes=1)),'GCODE')
+        gcode_compiler.compile_to_file(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".gcode", passes=1)
+        #logger.log(str.encode(gcode_compiler.compile(passes=1)))
+        gcodefile = open(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".gcode", "r")
+        
+        Document.create(user, 'compiled gcode', str.encode(gcodefile.read()),'GCODE')
+        logger.log("created db entry for\t" + random_name)
+        gcodefile.close()
 
     else:
 
