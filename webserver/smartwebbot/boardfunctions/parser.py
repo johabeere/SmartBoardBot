@@ -12,6 +12,8 @@ from smartwebbot import constants
 from smartwebbot.models.Document import Document
 
 
+offMessage="testStartCode"
+onMessage="testEndCode"
 def parse(user, slicer):
     logging.basicConfig(level=logging.NOTSET)
     logging.info("Starting from svg to gcode with latest file from Database")
@@ -23,7 +25,28 @@ def parse(user, slicer):
     myData=Document.objects.filter(fileType=constants.SVG).latest('created_on').data
     if slicer == "OLD":
         logging.info("Using old slicer")
+<<<<<<< HEAD
+
+        class CustomInterface(interfaces.Gcode):
+            def __init__(self):
+                super().__init__()
+            def laser_off(self):
+                return offMessage;
+            def set_laser_power(self, power):
+                if power < 0 or power > 1:
+                    raise ValueError(f"{power} is out of bounds. Laser power must be given between 0 and 1. "
+                                     f"The interface will scale it correctly.")
+
+                return onMessage; # Turn on the fan + change laser power
+
+
+
+
+
+        gcode_compiler = Compiler(CustomInterface, movement_speed=8000, cutting_speed=2000, pass_depth=0)
+=======
         gcode_compiler = Compiler(interfaces.Gcode, movement_speed=2000, cutting_speed=2000, pass_depth=0)
+>>>>>>> 94c677f46ddf072326373ca5f203284cb7bc4eb2
 
         letters = string.ascii_lowercase
         random_name = ''.join(random.choice(letters) for i in range(20))

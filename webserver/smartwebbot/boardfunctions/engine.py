@@ -1,4 +1,4 @@
-from asyncore import file_wrapper
+# from asyncore import file_wrapper
 import os
 from xml.dom.minidom import DocumentType
 
