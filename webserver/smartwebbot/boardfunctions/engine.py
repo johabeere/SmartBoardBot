@@ -158,7 +158,8 @@ def draw(scale, color, offsetx, offsety):
         global stopped
         if stopped:
             if color=="RED":
-                serialsend("M280 P1 S60;\n")
+                #serialsend("M280 P1 S60;\n")
+                serialsend("M280 P0 S00;\n")
             elif color=="BLUE":
                 serialsend("M280 P2 S20;\n")
             pencontroller.lowerPen()
@@ -170,7 +171,9 @@ def draw(scale, color, offsetx, offsety):
             serialsend("M400;\n")
 
             if color=="RED":
-                serialsend("M280 P1 S60\n")
+
+                #serialsend("M280 P1 S60\n")
+                serialsend("M280 P0 S70;\n")
             elif color=="BLUE":
                 serialsend("M280 P2 S20;\n")
             
@@ -179,9 +182,10 @@ def draw(scale, color, offsetx, offsety):
             pencontroller.lowerPen()
 
             serialsend("M400;\n")
-
+            #HOCH
             if color=="RED":
-                serialsend("M280 P1 S90;\n")
+                #serialsend("M280 P1 S90;\n")
+                serialsend("M280 P0 S00;\n")
             elif color=="BLUE":
                 serialsend("M280 P2 S95;\n")
         
@@ -200,7 +204,7 @@ def draw(scale, color, offsetx, offsety):
 
             #logger.log("Coords are: ("+str(xcoord)+";"+str(ycoord)+")")
             #line = firstpart + "X" + str(ycoord*float(scale)+ float("00" + offsety)) + " Y" + str(xcoord*float(scale)+float("00"+offsetx)) + ";\n"
-            line = firstpart + "X" + str(ycoord) + " Y" + str(xcoord) + ";\n"
+            line = firstpart + "X" + str(xcoord) + " Y" + str(ycoord) + ";\n"
             #logger.log("Xcord;\t"+xcoord +"Ycord;\t" + ycoord)
             serialsend(line)
         
