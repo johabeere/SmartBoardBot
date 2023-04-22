@@ -17,8 +17,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 LIVE = True
 FAKEGCODE = False
-TABLE_HEIGHT = 1000
-TABLE_WIDTH = 1600
+TABLE_HEIGHT = 915
+TABLE_WIDTH = 1300
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/

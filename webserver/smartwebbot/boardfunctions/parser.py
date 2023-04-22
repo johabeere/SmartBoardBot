@@ -47,7 +47,7 @@ def parse(user, slicer):
         # Refusing to write comments on code due to the 3 litres of beer the evening before
         curves = parse_file(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg") # Parse an svg file into geometric curves
 
-        #os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg")
+        os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".svg")
 
         gcode_compiler.append_curves(curves)
         gcode_compiler.unit = "mm"
@@ -58,6 +58,7 @@ def parse(user, slicer):
         Document.create(user, 'compiled gcode', str.encode(gcodefile.read()),'GCODE')
         logging.log("created db entry for\t" + random_name)
         gcodefile.close()
+        os.remove(os.getcwd() + "/smartwebbot/tmp/" + random_name + ".gcode")
 
     else:
 
