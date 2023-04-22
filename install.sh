@@ -60,7 +60,11 @@ After=multi-user.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=${PWD}/start.sh
+RestartSec=5
+StartLimitBurst=49
+StartLimitInterval=10
+ExecStart=python $(PWD)/SmartBoardBot/webserver/manage.py runserver 0.0.0.0:8080
+User=adolf
 [Install]
 WantedBy=multi-user.target" >> /etc/systemd/system/SmartBoardBot.service 
 sudo systemctl daemon-reload

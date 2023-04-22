@@ -152,7 +152,7 @@ LOGGING = {
    'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'general.log',
+            'filename': '/home/adolf/SmartBoardBot/general.log',
             'formatter': 'kindaverbose',
         },
     },
